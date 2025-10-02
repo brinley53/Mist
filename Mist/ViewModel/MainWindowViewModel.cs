@@ -69,6 +69,18 @@ namespace Mist.ViewModel
             }
         }
 
+        private List<string> ferretFiles = new List<string> { "ferret", "ferret_stress_1", "ferret_stress_1", "ferret_stress_1" };
+        private string ferretImage;
+        public string FerretImage
+        {
+            get { return ferretImage; }
+            set
+            {
+                ferretImage = value;
+                OnPropertyChanged();
+            }
+        }
+
         int heartrateEventTimer;
         int resistanceEventTimer;
         int tempEventTimer;
@@ -109,6 +121,7 @@ namespace Mist.ViewModel
             eventTwo = false;
             eventThree = false;
             stressLevel = 0; // 0 is baseline, no stress; 
+            ferretImage = ferretFiles[0];
 
             rnd = new Random();
 
@@ -205,7 +218,10 @@ namespace Mist.ViewModel
             }
 
             // Calculate stress level
-            stressLevel = Convert.ToInt32(eventOne) + Convert.ToInt32(eventTwo) + Convert.ToInt32(eventThree);
+            StressLevel = Convert.ToInt32(eventOne) + Convert.ToInt32(eventTwo) + Convert.ToInt32(eventThree);
+
+            // update ferret stress indicator
+            FerretImage = ferretFiles[stressLevel];
         }
 
         private void UpdateTimer_Second(object sender, EventArgs e)

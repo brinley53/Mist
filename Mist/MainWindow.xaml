@@ -3,9 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Mist"
+        xmlns:local="clr-namespace:Mist" 
+        xmlns:v="clr-namespace:Mist.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="480">
+    <Window.Resources>
+        <v:ImageSourceConverter x:Key="ImageSourceConverter" />
+    </Window.Resources>
     <Grid>
         <TextBlock x:Name="HeartrateTextBlock" HorizontalAlignment="Left" Margin="176,106,0,0" TextWrapping="Wrap" Text="{Binding Heartrate.Value}" VerticalAlignment="Top"/>
         <TextBlock x:Name="SoundTextBlock" HorizontalAlignment="Left" Margin="230,106,0,0" TextWrapping="Wrap" Text="50 dB" VerticalAlignment="Top"/>
@@ -23,5 +27,6 @@
         <Label Content="Body Temp" HorizontalAlignment="Left" Margin="300,80,0,0" VerticalAlignment="Top"/>
         <Label Content="Time" HorizontalAlignment="Left" Margin="368,83,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.536,0.541"/>
         <Label Content="People" HorizontalAlignment="Left" Margin="438,83,0,0" VerticalAlignment="Top"/>
+        <Image HorizontalAlignment="Left" Height="179" Margin="112,213,0,0" VerticalAlignment="Top" Width="208" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
     </Grid>
 </Window>
