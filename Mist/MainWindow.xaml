@@ -13,20 +13,18 @@
     <Grid>
         <TextBlock x:Name="HeartrateTextBlock" HorizontalAlignment="Left" Margin="176,106,0,0" TextWrapping="Wrap" Text="{Binding Heartrate.Value}" VerticalAlignment="Top"/>
         <TextBlock x:Name="SoundTextBlock" HorizontalAlignment="Left" Margin="230,106,0,0" TextWrapping="Wrap" Text="50 dB" VerticalAlignment="Top"/>
-        <TextBlock x:Name="PeopleTextBlock" HorizontalAlignment="Left" Margin="458,109,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="PeopleTextBlock" HorizontalAlignment="Left" Margin="399,109,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
         <TextBlock x:Name="SkinResistanceTextBlock" HorizontalAlignment="Left" Margin="106,106,0,0" TextWrapping="Wrap" Text="{Binding SkinResistance.Value}" VerticalAlignment="Top"/>
         <TextBlock x:Name="BodyTemperatureTextBlock" HorizontalAlignment="Left" Margin="325,110,0,0" TextWrapping="Wrap" Text="{Binding BodyTemperature.Value}" VerticalAlignment="Top"/>
-        <TextBlock x:Name="Time" HorizontalAlignment="Left" Margin="379,109,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
         <Label Content="Stress Level" HorizontalAlignment="Left" Margin="300,200,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="StressLevel" Text="{Binding StressLevel}" Margin="325, 225,0,0"/>
         <Label Content="Risk Level" HorizontalAlignment="Left" Margin="500,200,0,0" VerticalAlignment="Top"/>
         <TextBlock x:Name="RiskLevel" Text="None" Margin="520,225,0,0"/>
-        <Label Content="Skin Resistance" HorizontalAlignment="Left" Margin="67,80,0,0" VerticalAlignment="Top"/>
-        <Label Content="Heartrate" HorizontalAlignment="Left" Margin="163,80,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding SRT}" HorizontalAlignment="Left" Margin="67,80,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding HRT}" HorizontalAlignment="Left" Margin="163,80,0,0" VerticalAlignment="Top"/>
         <Label Content="Sound" HorizontalAlignment="Left" Margin="226,80,0,0" VerticalAlignment="Top"/>
-        <Label Content="Body Temp" HorizontalAlignment="Left" Margin="300,80,0,0" VerticalAlignment="Top"/>
-        <Label Content="Time" HorizontalAlignment="Left" Margin="368,83,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.536,0.541"/>
-        <Label Content="People" HorizontalAlignment="Left" Margin="438,83,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding BTT}" HorizontalAlignment="Left" Margin="300,80,0,0" VerticalAlignment="Top"/>
+        <Label Content="People" HorizontalAlignment="Left" Margin="382,80,0,0" VerticalAlignment="Top"/>
         <Image HorizontalAlignment="Left" Height="179" Margin="112,213,0,0" VerticalAlignment="Top" Width="208" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
         <Button Name="HeartInc" Content="Heartrate +" HorizontalAlignment="Left" Margin="67,462,0,0" VerticalAlignment="Top" Command="{Binding HeartIncCommand}"/>
         <Button Name="HeartDec" Content="Heartrate -" HorizontalAlignment="Left" Margin="67,495,0,0" VerticalAlignment="Top" Command="{Binding HeartDecCommand}" RenderTransformOrigin="-0.302,2.023"/>
@@ -34,5 +32,6 @@
         <Button Name="ResDec" Content="Resistance -" HorizontalAlignment="Left" Margin="156,528,0,0" VerticalAlignment="Top" Command="{Binding ResDecCommand}"/>
         <Button Name="TempInc" Content="Temp +" HorizontalAlignment="Left" Margin="281,485,0,0" VerticalAlignment="Top" Command="{Binding TempIncCommand}"/>
         <Button Name="TempDec" Content="Temp -" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Command="{Binding TempDecCommand}"/>
+        <TextBlock Name="FerretText" HorizontalAlignment="Left" Margin="157,53,0,0" TextWrapping="Wrap" Text="{Binding FerretText}" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

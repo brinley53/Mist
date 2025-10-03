@@ -11,11 +11,13 @@
   <ItemGroup>
     <None Remove="images\ferret.png" />
     <None Remove="images\ferret_stress_1.png" />
+    <None Remove="images\ferret_stress_2.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="images\ferret.png" />
     <Resource Include="images\ferret_stress_1.png" />
+    <Resource Include="images\ferret_stress_2.png" />
   </ItemGroup>
 
 </Project>

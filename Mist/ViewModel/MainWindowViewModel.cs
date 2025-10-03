@@ -53,12 +53,12 @@ namespace Mist.ViewModel
         }
 
         // button commands to increase/decrease data
-        public RelayCommand HeartIncCommand => new RelayCommand(execute => Heartrate.Increase(10));
-        public RelayCommand HeartDecCommand => new RelayCommand(execute => Heartrate.Decrease(10));
-        public RelayCommand ResIncCommand => new RelayCommand(execute => SkinResistance.Increase(10));
-        public RelayCommand ResDecCommand => new RelayCommand(execute => SkinResistance.Decrease(10));
-        public RelayCommand TempIncCommand => new RelayCommand(execute => BodyTemperature.Increase(10));
-        public RelayCommand TempDecCommand => new RelayCommand(execute => BodyTemperature.Decrease(10));
+        public RelayCommand HeartIncCommand => new RelayCommand(execute => Heartrate.Increase(5));
+        public RelayCommand HeartDecCommand => new RelayCommand(execute => Heartrate.Decrease(5));
+        public RelayCommand ResIncCommand => new RelayCommand(execute => SkinResistance.Increase(5000));
+        public RelayCommand ResDecCommand => new RelayCommand(execute => SkinResistance.Decrease(5000));
+        public RelayCommand TempIncCommand => new RelayCommand(execute => BodyTemperature.Increase(0.1f));
+        public RelayCommand TempDecCommand => new RelayCommand(execute => BodyTemperature.Decrease(0.1f));
 
         // Stress event variables
         // Via Tomczak et. al
@@ -77,7 +77,7 @@ namespace Mist.ViewModel
             }
         }
 
-        private List<string> ferretFiles = new List<string> { "ferret", "ferret_stress_1", "ferret_stress_1", "ferret_stress_1" };
+        private List<string> ferretFiles = new List<string> { "ferret", "ferret_stress_1", "ferret_stress_2", "ferret_stress_2" };
         private string ferretImage;
         public string FerretImage
         {
@@ -88,6 +88,52 @@ namespace Mist.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private List<String> prompts = new List<string> { "", "Stress 1 calming text", "Stress 2 calming text", "Stress 3 calming text" };
+        private string ferretText;
+        public string FerretText
+        {
+            get { return ferretText; }
+            set
+            {
+                ferretText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string hrt;
+        public string HRT
+        {
+            get { return hrt; }
+            set
+            {
+                hrt = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string srt;
+        public string SRT
+        {
+            get { return srt; }
+            set
+            {
+                srt = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string btt;
+        public string BTT
+        {
+            get { return btt; }
+            set
+            {
+                btt = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         int heartrateEventTimer;
         int resistanceEventTimer;
@@ -108,22 +154,26 @@ namespace Mist.ViewModel
             heartrateEventTimer = 0;
 
             SkinResistance = new Biometrics();
-            SkinResistance.Value = 1000f;
+            SkinResistance.Value = 50000f; // Lower Range: down to 1000 ohms (sweaty). Upper range: 100,000 ohms (dry)
             SkinResistance.Values = [SkinResistance.Value];
-            SkinResistance.Reference = 1000f;
+            SkinResistance.Reference = 50000f;
             SkinResistance.DifferenceThreshold = SkinResistance.Reference * 0.10f;
             SkinResistance.DurationCondition = 60f;
             SkinResistance.StressIndicationDirection = -1;
             resistanceEventTimer = 0;
 
             BodyTemperature = new Biometrics();
-            BodyTemperature.Value = 96.8f;
+            BodyTemperature.Value = 37f;
             BodyTemperature.Values = [BodyTemperature.Value];
-            BodyTemperature.Reference = 96.8f;
+            BodyTemperature.Reference = 37f;
             BodyTemperature.DifferenceThreshold = 0.1f; //Degrees Celsius
             BodyTemperature.DurationCondition = 60f;
             BodyTemperature.StressIndicationDirection = -1;
             tempEventTimer = 0;
+
+            HRT = "Heartrate";
+            SRT = "Skin Resistance";
+            BTT = "Body Temp";
 
             eventOne = false;
             eventTwo = false;
@@ -138,18 +188,6 @@ namespace Mist.ViewModel
             timer.Interval = new TimeSpan(0, 0, 1); // updates every second
             timer.Start();
 
-            //// Five second timer
-            //DispatcherTimer timer_5sec = new DispatcherTimer();
-            //timer_5sec.Tick += new EventHandler(UpdateTimer_FiveSecond);
-            //timer_5sec.Interval = new TimeSpan(0, 0, 5); // hours, minutes, seconds
-            //timer_5sec.Start();
-            // Update the reference values every minute
-            // Note: heartrate should have a reference value updated every 30 sec
-            //DispatcherTimer timer_minute = new DispatcherTimer();
-            //timer_minute.Tick += new EventHandler(update_references);
-            //timer_minute.Interval = new TimeSpan(0, 0, 5); // hours, minutes, seconds
-            //timer_minute.Start();
-
             // Delta t timer
             DispatcherTimer delta_t_timer = new DispatcherTimer();
             delta_t_timer.Tick += new EventHandler(UpdateTimer_DeltaT);
@@ -163,44 +201,59 @@ namespace Mist.ViewModel
             if (Heartrate.StressCondition())
             {
                 // Check for stress event one, decrease in resistance after heart increase
-                eventOne = heartrateEventTimer == deltaT && SkinResistance.StressCondition();
+                if ((0 < heartrateEventTimer - resistanceEventTimer && heartrateEventTimer - resistanceEventTimer <= deltaT) && SkinResistance.StressCondition())
+                {
+                    eventOne = true;
+                }
 
                 // Check for stress event three, decrease in temperature after heart increase
-                eventThree = heartrateEventTimer == 2 * deltaT && BodyTemperature.StressCondition();
-
-                heartrateEventTimer += deltaT;
+                if ((0 < heartrateEventTimer - tempEventTimer && heartrateEventTimer - tempEventTimer <= 2 * deltaT) && BodyTemperature.StressCondition())
+                {
+                    eventThree = true;
+                }
             } else
             {
                 // Reset Heartrate variables
+                if (eventOne || eventThree)
+                {
+                    Heartrate.Values = [Heartrate.Value];
+                }
+                if (eventThree)
+                {
+                    BodyTemperature.Values = [BodyTemperature.Value];
+                }
                 heartrateEventTimer = 0;
-                Heartrate.Values = [Heartrate.Value];
                 eventOne = false;
                 eventThree = false;
+                HRT = "Heartrate";
             }
 
             // Check for change in resistance
             if (SkinResistance.StressCondition())
             {
                 // Check for stress event two: Temperature decrease is observed at delta t after a resistance decrease
-                eventTwo = resistanceEventTimer == deltaT && BodyTemperature.StressCondition();
-
-                resistanceEventTimer += deltaT;
+                if ((0 < resistanceEventTimer - tempEventTimer && resistanceEventTimer - tempEventTimer <= deltaT) && BodyTemperature.StressCondition())
+                {
+                    eventTwo = true;
+                }
             } else
             {
+                SRT = "Skin Resistance";
                 // Reset Skin Resistance variables
+                if (eventTwo)
+                {
+                    SkinResistance.Values = [SkinResistance.Value];
+                    BodyTemperature.Values = [BodyTemperature.Value];
+                }
                 resistanceEventTimer = 0;
-                SkinResistance.Values = [SkinResistance.Value];
                 eventTwo = false;
             }
 
             // Reset/set temperature variables as needed
-            if (BodyTemperature.StressCondition())
+            if (!BodyTemperature.StressCondition())
             {
-                tempEventTimer += deltaT;
-            } else
-            {
+                BTT = "Body Temp";
                 tempEventTimer = 0;
-                BodyTemperature.Values = [BodyTemperature.Value];
             }
 
             // Reset reference values as needed
@@ -229,13 +282,44 @@ namespace Mist.ViewModel
             StressLevel = Convert.ToInt32(eventOne) + Convert.ToInt32(eventTwo) + Convert.ToInt32(eventThree);
 
             // update ferret stress indicator
+            FerretText = prompts[stressLevel];
             FerretImage = ferretFiles[stressLevel];
         }
 
         private void UpdateTimer_Second(object sender, EventArgs e)
         {
-            // Calculate next heartrate value
-            int heartrateChange = rnd.Next(1, 6);
+            // Check for change in pulse
+            if (Heartrate.StressCondition())
+            {
+                heartrateEventTimer += 1;
+                HRT = "Heartrate Stress";
+            } else
+            {
+                HRT = "Heartrate";
+            }
+
+            // Check for change in resistance
+            if (SkinResistance.StressCondition())
+            {
+                resistanceEventTimer += 1;
+                SRT = "Skin Resistance Stress";
+            } else
+            {
+                SRT = "Skin Resistance";
+            }
+
+            if (BodyTemperature.StressCondition())
+            {
+                BTT = "Body Temp Stress";
+                tempEventTimer += 1;
+            } else
+            {
+                BTT = "Body Temp";
+            }
+
+
+                // Calculate next heartrate value
+                int heartrateChange = rnd.Next(0, 4);
             if (Heartrate.Value < 60)
             {
                 Heartrate.Value += heartrateChange;
@@ -254,16 +338,6 @@ namespace Mist.ViewModel
             Heartrate.Values.Add(Heartrate.Value);
             BodyTemperature.Values.Add(BodyTemperature.Value);
             SkinResistance.Values.Add(SkinResistance.Value);
-        }
-
-        public void IncreaseHeartrate(object sender, EventArgs e)
-        {
-            Heartrate.Value += 10;
-        }
-
-        public void DecreaseHeartrate(object sender, EventArgs e)
-        {
-            Heartrate.Value -= 10;
         }
 
         //private void detect_risk()
