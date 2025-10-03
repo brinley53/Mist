@@ -28,5 +28,11 @@
         <Label Content="Time" HorizontalAlignment="Left" Margin="368,83,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.536,0.541"/>
         <Label Content="People" HorizontalAlignment="Left" Margin="438,83,0,0" VerticalAlignment="Top"/>
         <Image HorizontalAlignment="Left" Height="179" Margin="112,213,0,0" VerticalAlignment="Top" Width="208" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
+        <Button Name="HeartInc" Content="Heartrate +" HorizontalAlignment="Left" Margin="67,462,0,0" VerticalAlignment="Top" Command="{Binding HeartIncCommand}"/>
+        <Button Name="HeartDec" Content="Heartrate -" HorizontalAlignment="Left" Margin="67,495,0,0" VerticalAlignment="Top" Command="{Binding HeartDecCommand}" RenderTransformOrigin="-0.302,2.023"/>
+        <Button Name="ResInc" Content="Resistance +" HorizontalAlignment="Left" Margin="158,495,0,0" VerticalAlignment="Top" Command="{Binding ResIncCommand}"/>
+        <Button Name="ResDec" Content="Resistance -" HorizontalAlignment="Left" Margin="156,528,0,0" VerticalAlignment="Top" Command="{Binding ResDecCommand}"/>
+        <Button Name="TempInc" Content="Temp +" HorizontalAlignment="Left" Margin="281,485,0,0" VerticalAlignment="Top" Command="{Binding TempIncCommand}"/>
+        <Button Name="TempDec" Content="Temp -" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Command="{Binding TempDecCommand}"/>
     </Grid>
 </Window>

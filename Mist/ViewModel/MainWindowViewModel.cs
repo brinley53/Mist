@@ -52,6 +52,14 @@ namespace Mist.ViewModel
             }
         }
 
+        // button commands to increase/decrease data
+        public RelayCommand HeartIncCommand => new RelayCommand(execute => Heartrate.Increase(10));
+        public RelayCommand HeartDecCommand => new RelayCommand(execute => Heartrate.Decrease(10));
+        public RelayCommand ResIncCommand => new RelayCommand(execute => SkinResistance.Increase(10));
+        public RelayCommand ResDecCommand => new RelayCommand(execute => SkinResistance.Decrease(10));
+        public RelayCommand TempIncCommand => new RelayCommand(execute => BodyTemperature.Increase(10));
+        public RelayCommand TempDecCommand => new RelayCommand(execute => BodyTemperature.Decrease(10));
+
         // Stress event variables
         // Via Tomczak et. al
         bool eventOne; // A boolean to determine whether the following stress event is occurring: decrease in resistance is observed at delta t after a pulse increase
@@ -242,6 +250,20 @@ namespace Mist.ViewModel
                 int sign = rnd.Next(2);
                 Heartrate.Value += signs[sign] * heartrateChange;
             }
+
+            Heartrate.Values.Add(Heartrate.Value);
+            BodyTemperature.Values.Add(BodyTemperature.Value);
+            SkinResistance.Values.Add(SkinResistance.Value);
+        }
+
+        public void IncreaseHeartrate(object sender, EventArgs e)
+        {
+            Heartrate.Value += 10;
+        }
+
+        public void DecreaseHeartrate(object sender, EventArgs e)
+        {
+            Heartrate.Value -= 10;
         }
 
         //private void detect_risk()

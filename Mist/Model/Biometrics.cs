@@ -81,5 +81,15 @@ namespace Mist.Model
         {
             return Math.Abs(Values.Average() - Reference) > DifferenceThreshold && timeElapsed > DurationCondition;
         }
+
+        public void Increase(float amount)
+        {
+            Value += amount;
+        }
+
+        public void Decrease(float amount)
+        {
+            Value -= amount;
+        }
     }
 }
