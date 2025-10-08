@@ -8,7 +8,7 @@ using System.Windows.Threading;
 
 namespace Mist.Model
 {
-    public class Biometrics : ViewModelBase
+    public class Biometric : ViewModelBase
     {
         private float _value;
         public float Value {

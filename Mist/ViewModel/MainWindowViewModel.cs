@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
+using System.Media;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +19,10 @@ namespace Mist.ViewModel
 
         Random rnd;
 
-        private Biometrics heartrate;
+        private Biometric heartrate;
 
         // Data variables
-        public Biometrics Heartrate
+        public Biometric Heartrate
         {
             get { return heartrate; }
             set
@@ -30,9 +32,9 @@ namespace Mist.ViewModel
             }
         }
 
-        private Biometrics skinResistance;
+        private Biometric skinResistance;
 
-        public Biometrics SkinResistance {
+        public Biometric SkinResistance {
             get { return skinResistance; }
             set
             {
@@ -41,13 +43,35 @@ namespace Mist.ViewModel
             }
         }
 
-        private Biometrics bodyTemperature;
-        public Biometrics BodyTemperature
+        private Biometric bodyTemperature;
+        public Biometric BodyTemperature
         {
             get { return bodyTemperature; }
             set
             {
                 bodyTemperature = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Trigger soundLevel;
+        public Trigger SoundLevel
+        {
+            get { return soundLevel; }
+            set
+            {
+                soundLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Trigger lightLevel;
+        public Trigger LightLevel
+        {
+            get { return lightLevel; }
+            set
+            {
+                lightLevel = value;
                 OnPropertyChanged();
             }
         }
@@ -59,6 +83,10 @@ namespace Mist.ViewModel
         public RelayCommand ResDecCommand => new RelayCommand(execute => SkinResistance.Decrease(5000));
         public RelayCommand TempIncCommand => new RelayCommand(execute => BodyTemperature.Increase(0.1f));
         public RelayCommand TempDecCommand => new RelayCommand(execute => BodyTemperature.Decrease(0.1f));
+        public RelayCommand SoundIncCommand => new RelayCommand(execute => SoundLevel.Increase(10f));
+        public RelayCommand SoundDecCommand => new RelayCommand(execute => SoundLevel.Decrease(10f));
+        public RelayCommand LightIncCommand => new RelayCommand(execute => LightLevel.Increase(500f));
+        public RelayCommand LightDecCommand => new RelayCommand(execute => LightLevel.Decrease(500f));
 
         // Stress event variables
         // Via Tomczak et. al
@@ -73,6 +101,17 @@ namespace Mist.ViewModel
             set
             {
                 stressLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int riskLevel;
+        public int RiskLevel
+        {
+            get { return riskLevel; }
+            set
+            {
+                riskLevel = value;
                 OnPropertyChanged();
             }
         }
@@ -134,7 +173,6 @@ namespace Mist.ViewModel
             }
         }
 
-
         int heartrateEventTimer;
         int resistanceEventTimer;
         int tempEventTimer;
@@ -144,7 +182,7 @@ namespace Mist.ViewModel
         public MainWindowViewModel()
         {
             // Initialize Biometric data variables
-            Heartrate = new Biometrics();
+            Heartrate = new Biometric();
             Heartrate.Value = 75f;
             Heartrate.Values = [Heartrate.Value];
             Heartrate.Reference = 75f;
@@ -153,7 +191,7 @@ namespace Mist.ViewModel
             Heartrate.StressIndicationDirection = 1;
             heartrateEventTimer = 0;
 
-            SkinResistance = new Biometrics();
+            SkinResistance = new Biometric();
             SkinResistance.Value = 50000f; // Lower Range: down to 1000 ohms (sweaty). Upper range: 100,000 ohms (dry)
             SkinResistance.Values = [SkinResistance.Value];
             SkinResistance.Reference = 50000f;
@@ -162,7 +200,7 @@ namespace Mist.ViewModel
             SkinResistance.StressIndicationDirection = -1;
             resistanceEventTimer = 0;
 
-            BodyTemperature = new Biometrics();
+            BodyTemperature = new Biometric();
             BodyTemperature.Value = 37f;
             BodyTemperature.Values = [BodyTemperature.Value];
             BodyTemperature.Reference = 37f;
@@ -170,6 +208,14 @@ namespace Mist.ViewModel
             BodyTemperature.DurationCondition = 60f;
             BodyTemperature.StressIndicationDirection = -1;
             tempEventTimer = 0;
+
+            SoundLevel = new Trigger();
+            SoundLevel.Value = 0f; // decibels
+            SoundLevel.Threshold = 60f; //sound levels that start overstimulation: 60-85 dB
+
+            LightLevel = new Trigger();
+            LightLevel.Value = 500f; // Lux
+            LightLevel.Threshold = 1000f; // Lux. research more. How to tell difference between sunlight and indoor lighting?
 
             HRT = "Heartrate";
             SRT = "Skin Resistance";
@@ -218,13 +264,8 @@ namespace Mist.ViewModel
                 {
                     Heartrate.Values = [Heartrate.Value];
                 }
-                if (eventThree)
-                {
-                    BodyTemperature.Values = [BodyTemperature.Value];
-                }
+
                 heartrateEventTimer = 0;
-                eventOne = false;
-                eventThree = false;
                 HRT = "Heartrate";
             }
 
@@ -243,10 +284,8 @@ namespace Mist.ViewModel
                 if (eventTwo)
                 {
                     SkinResistance.Values = [SkinResistance.Value];
-                    BodyTemperature.Values = [BodyTemperature.Value];
                 }
                 resistanceEventTimer = 0;
-                eventTwo = false;
             }
 
             // Reset/set temperature variables as needed
@@ -254,6 +293,25 @@ namespace Mist.ViewModel
             {
                 BTT = "Body Temp";
                 tempEventTimer = 0;
+                if (eventTwo || eventThree)
+                {
+                    BodyTemperature.Values = [BodyTemperature.Value];
+                }
+            }
+
+            if (!Heartrate.StressCondition() || !SkinResistance.StressCondition())
+            {
+                eventOne = false;
+            }
+
+            if (!Heartrate.StressCondition() || !BodyTemperature.StressCondition())
+            {
+                eventThree = false;
+            }
+
+            if (!SkinResistance.StressCondition() || !BodyTemperature.StressCondition())
+            {
+                eventTwo = false;
             }
 
             // Reset reference values as needed
@@ -280,6 +338,7 @@ namespace Mist.ViewModel
 
             // Calculate stress level
             StressLevel = Convert.ToInt32(eventOne) + Convert.ToInt32(eventTwo) + Convert.ToInt32(eventThree);
+            RiskLevel = Convert.ToInt32(SoundLevel.RiskCondition()) + Convert.ToInt32(LightLevel.RiskCondition());
 
             // update ferret stress indicator
             FerretText = prompts[stressLevel];
