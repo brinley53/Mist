@@ -79,7 +79,7 @@ namespace Mist.Model
 
         public bool LongtermCondition(float timeElapsed)
         {
-            return Math.Abs(Values.Average() - Reference) > DifferenceThreshold && timeElapsed > DurationCondition;
+            return Math.Abs(Value - Reference) > DifferenceThreshold && timeElapsed > DurationCondition;
         }
 
         public void Increase(float amount)

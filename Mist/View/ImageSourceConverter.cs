@@ -22,6 +22,5 @@ namespace Mist.View
         {
             throw new NotSupportedException();
         }
-        
     }
 }

@@ -9,6 +9,17 @@ namespace Mist.Model
 {
     public class Trigger : ViewModelBase
     {
+        private string name = "";
+        public string Name
+        {
+            get { return name; }
+            set 
+            { 
+                name = value;
+                OnPropertyChanged();
+            }
+        }
+
         private float _value;
         public float Value
         {

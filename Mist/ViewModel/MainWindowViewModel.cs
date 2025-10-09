@@ -87,6 +87,7 @@ namespace Mist.ViewModel
         public RelayCommand SoundDecCommand => new RelayCommand(execute => SoundLevel.Decrease(10f));
         public RelayCommand LightIncCommand => new RelayCommand(execute => LightLevel.Increase(500f));
         public RelayCommand LightDecCommand => new RelayCommand(execute => LightLevel.Decrease(500f));
+        public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => StressTextVisibility = !StressTextVisibility);
 
         // Stress event variables
         // Via Tomczak et. al
@@ -101,6 +102,17 @@ namespace Mist.ViewModel
             set
             {
                 stressLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool stressTextVisibility;
+        public bool StressTextVisibility
+        {
+            get { return stressTextVisibility; }
+            set
+            {
+                stressTextVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -210,12 +222,14 @@ namespace Mist.ViewModel
             tempEventTimer = 0;
 
             SoundLevel = new Trigger();
+            SoundLevel.Name = "Sound";
             SoundLevel.Value = 0f; // decibels
             SoundLevel.Threshold = 60f; //sound levels that start overstimulation: 60-85 dB
 
             LightLevel = new Trigger();
+            LightLevel.Name = "Light";
             LightLevel.Value = 500f; // Lux
-            LightLevel.Threshold = 1000f; // Lux. research more. How to tell difference between sunlight and indoor lighting?
+            LightLevel.Threshold = 1000f; // Lux. research more. Assuming indoor lighting.
 
             HRT = "Heartrate";
             SRT = "Skin Resistance";
@@ -338,6 +352,7 @@ namespace Mist.ViewModel
 
             // Calculate stress level
             StressLevel = Convert.ToInt32(eventOne) + Convert.ToInt32(eventTwo) + Convert.ToInt32(eventThree);
+            StressTextVisibility = StressLevel > 0;
             RiskLevel = Convert.ToInt32(SoundLevel.RiskCondition()) + Convert.ToInt32(LightLevel.RiskCondition());
 
             // update ferret stress indicator
@@ -398,35 +413,5 @@ namespace Mist.ViewModel
             BodyTemperature.Values.Add(BodyTemperature.Value);
             SkinResistance.Values.Add(SkinResistance.Value);
         }
-
-        //private void detect_risk()
-        //{
-        //    int currentSoundLevel;
-        //    int currentPeople;
-        //}
-
-        //private void UpdateTimer_FiveSecond(object sender, EventArgs e)
-        //{
-        //    // Calculate next person value
-        //    int currentPeopleCount = Convert.ToInt16(PeopleTextBlock.Text);
-        //    int peopleCountChange = rnd.Next(0, 3);
-        //    if (currentPeopleCount < 3)
-        //    {
-        //        currentPeopleCount += peopleCountChange;
-        //    }
-        //    else
-        //    {
-        //        var signs = new[] { -1, 1 };
-        //        int sign = rnd.Next(2);
-        //        currentPeopleCount += signs[sign] * peopleCountChange;
-        //    }
-
-        //    // Calculate next sound level value
-        //    int currentSoundLevel = rnd.Next(30, 100);
-
-
-        //    PeopleTextBlock.Text = currentPeopleCount.ToString();
-        //    SoundTextBlock.Text = currentSoundLevel.ToString() + " dB";
-        //}
     }
 }
