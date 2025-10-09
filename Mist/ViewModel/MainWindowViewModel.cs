@@ -128,7 +128,7 @@ namespace Mist.ViewModel
             }
         }
 
-        private List<string> ferretFiles = new List<string> { "ferret", "ferret_stress_1", "ferret_stress_2", "ferret_stress_2" };
+        private List<string> ferretFiles = new List<string> { "ferret", "ferret_stress_1", "ferret_stress_2", "ferret_stress_3" };
         private string ferretImage;
         public string FerretImage
         {

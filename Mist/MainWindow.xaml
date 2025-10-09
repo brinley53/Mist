@@ -57,7 +57,7 @@
                 </StackPanel>
             </Grid>
             <StackPanel Name="Data" Grid.Column="2">
-                <Label Content="{Binding SRT}" />
+                <Label Content="{Binding SRT}"/>
                 <TextBlock x:Name="SkinResistanceTextBlock" Text="{Binding SkinResistance.Value}"/>
                 <Label Content="{Binding HRT}"/>
                 <TextBlock x:Name="HeartrateTextBlock" Text="{Binding Heartrate.Value}"/>
@@ -72,7 +72,7 @@
                 <Label Content="Risk Level"/>
                 <TextBlock x:Name="RiskLevel" Text="{Binding RiskLevel}"/>
             </StackPanel>
-            <Image HorizontalAlignment="Left" Height="179" Margin="112,213,0,0" VerticalAlignment="Top" Width="208" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
+            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
         </Grid>
         <Grid Name="DataControls" Grid.Row="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
