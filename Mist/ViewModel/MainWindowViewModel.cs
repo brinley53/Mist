@@ -2,6 +2,7 @@
 using Mist.MVVM;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
 using System.Diagnostics.SymbolStore;
@@ -88,6 +89,7 @@ namespace Mist.ViewModel
         public RelayCommand LightIncCommand => new RelayCommand(execute => LightLevel.Increase(500f));
         public RelayCommand LightDecCommand => new RelayCommand(execute => LightLevel.Decrease(500f));
         public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => StressTextVisibility = !StressTextVisibility);
+        public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => TriggersVisibility = !TriggersVisibility);
 
         // Stress event variables
         // Via Tomczak et. al
@@ -113,6 +115,17 @@ namespace Mist.ViewModel
             set
             {
                 stressTextVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool triggersVisibility;
+        public bool TriggersVisibility
+        {
+            get { return triggersVisibility; }
+            set
+            {
+                triggersVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -185,6 +198,17 @@ namespace Mist.ViewModel
             }
         }
 
+        private ObservableCollection<Trigger> triggers;
+        public ObservableCollection<Trigger> Triggers
+        {
+            get { return triggers; }
+            set
+            {
+                triggers = value;
+                OnPropertyChanged();
+            }
+        }
+
         int heartrateEventTimer;
         int resistanceEventTimer;
         int tempEventTimer;
@@ -223,8 +247,8 @@ namespace Mist.ViewModel
 
             SoundLevel = new Trigger();
             SoundLevel.Name = "Sound";
-            SoundLevel.Value = 0f; // decibels
-            SoundLevel.Threshold = 60f; //sound levels that start overstimulation: 60-85 dB
+            SoundLevel.Value = 50f; // decibels
+            SoundLevel.Threshold = 77.5f; //sound levels that start overstimulation: 60-85 dB
 
             LightLevel = new Trigger();
             LightLevel.Name = "Light";
@@ -240,6 +264,12 @@ namespace Mist.ViewModel
             eventThree = false;
             stressLevel = 0; // 0 is baseline, no stress; 
             ferretImage = ferretFiles[0];
+
+            Triggers = new ObservableCollection<Trigger>() 
+            {
+                SoundLevel,
+                LightLevel
+            };
 
             rnd = new Random();
 

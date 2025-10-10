@@ -21,6 +21,11 @@
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
             <Grid Name="StressOptions" Margin="0,30,0,0" Height="150" VerticalAlignment="Top" Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*"/>
@@ -42,7 +47,7 @@
                                    FontSize="10"
                                    Width="40"/>
                     </Button>
-                    <Button Name="ListTriggers">
+                    <Button Name="ListTriggers" Command="{Binding ToggleTriggersVisibility}">
                         <TextBlock Text="See what's bothering Rue." 
                                    TextWrapping="Wrap" 
                                    TextAlignment="Center"
@@ -56,7 +61,17 @@
                     </Button>
                 </StackPanel>
             </Grid>
-            <StackPanel Name="Data" Grid.Column="2">
+            <Image Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
+            <Grid Grid.Row="1" Margin="25" Background="LightPink" Visibility="{Binding TriggersVisibility, Converter={StaticResource BoolVisConverter}}">
+                <ItemsControl ItemsSource="{Binding Triggers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" Visibility="{Binding Risk, Converter={StaticResource BoolVisConverter}, ConverterParameter='Collapse'}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+            <StackPanel Name="Data" Grid.Column="2" Grid.RowSpan="2">
                 <Label Content="{Binding SRT}"/>
                 <TextBlock x:Name="SkinResistanceTextBlock" Text="{Binding SkinResistance.Value}"/>
                 <Label Content="{Binding HRT}"/>
@@ -72,7 +87,6 @@
                 <Label Content="Risk Level"/>
                 <TextBlock x:Name="RiskLevel" Text="{Binding RiskLevel}"/>
             </StackPanel>
-            <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
         </Grid>
         <Grid Name="DataControls" Grid.Row="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

@@ -42,9 +42,24 @@ namespace Mist.Model
             }
         }
 
+        private bool risk;
+        public bool Risk
+        {
+            get 
+            {
+                return risk;
+            }
+            set
+            {
+                risk = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool RiskCondition()
         {
-            return Value >= Threshold;
+            Risk = Value >= Threshold;
+            return Risk;
         }
 
         public void Increase(float amount)
