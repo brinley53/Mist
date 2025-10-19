@@ -8,6 +8,7 @@ using System.Diagnostics.Metrics;
 using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Media;
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,6 +91,7 @@ namespace Mist.ViewModel
         public RelayCommand LightDecCommand => new RelayCommand(execute => LightLevel.Decrease(500f));
         public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => StressTextVisibility = !StressTextVisibility);
         public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => TriggersVisibility = !TriggersVisibility);
+        public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => ActivitiesVisibility = !ActivitiesVisibility);
 
         // Stress event variables
         // Via Tomczak et. al
@@ -130,6 +132,17 @@ namespace Mist.ViewModel
             }
         }
 
+        private bool activitiesVisibility;
+        public bool ActivitiesVisibility
+        {
+            get { return activitiesVisibility; }
+            set
+            {
+                activitiesVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         private int riskLevel;
         public int RiskLevel
         {
@@ -153,7 +166,7 @@ namespace Mist.ViewModel
             }
         }
 
-        private List<String> prompts = new List<string> { "", "Stress 1 calming text", "Stress 2 calming text", "Stress 3 calming text" };
+        private List<String> prompts = new List<string> { "", "Mr. Pet is feeling uneasy.", "Stress 2 calming text", "Stress 3 calming text" };
         private string ferretText;
         public string FerretText
         {
@@ -209,6 +222,17 @@ namespace Mist.ViewModel
             }
         }
 
+        private ObservableCollection<Activity> activities;
+        public ObservableCollection<Activity> Activities
+        {
+            get { return activities; }
+            set
+            {
+                activities = value;
+                OnPropertyChanged();
+            }
+        }
+
         int heartrateEventTimer;
         int resistanceEventTimer;
         int tempEventTimer;
@@ -218,42 +242,20 @@ namespace Mist.ViewModel
         public MainWindowViewModel()
         {
             // Initialize Biometric data variables
-            Heartrate = new Biometric();
-            Heartrate.Value = 75f;
-            Heartrate.Values = [Heartrate.Value];
-            Heartrate.Reference = 75f;
+            Heartrate = new Biometric(75f, 30f, 1);
             Heartrate.DifferenceThreshold = Heartrate.Reference * 0.05f;
-            Heartrate.DurationCondition = 30f;
-            Heartrate.StressIndicationDirection = 1;
             heartrateEventTimer = 0;
 
-            SkinResistance = new Biometric();
-            SkinResistance.Value = 50000f; // Lower Range: down to 1000 ohms (sweaty). Upper range: 100,000 ohms (dry)
-            SkinResistance.Values = [SkinResistance.Value];
-            SkinResistance.Reference = 50000f;
+            SkinResistance = new Biometric(50000f, 60f, -1); // Value Lower Range: down to 1000 ohms (sweaty). Upper range: 100,000 ohms (dry)
             SkinResistance.DifferenceThreshold = SkinResistance.Reference * 0.10f;
-            SkinResistance.DurationCondition = 60f;
-            SkinResistance.StressIndicationDirection = -1;
             resistanceEventTimer = 0;
 
-            BodyTemperature = new Biometric();
-            BodyTemperature.Value = 37f;
-            BodyTemperature.Values = [BodyTemperature.Value];
-            BodyTemperature.Reference = 37f;
+            BodyTemperature = new Biometric(37f, 60f, -1);
             BodyTemperature.DifferenceThreshold = 0.1f; //Degrees Celsius
-            BodyTemperature.DurationCondition = 60f;
-            BodyTemperature.StressIndicationDirection = -1;
             tempEventTimer = 0;
 
-            SoundLevel = new Trigger();
-            SoundLevel.Name = "Sound";
-            SoundLevel.Value = 50f; // decibels
-            SoundLevel.Threshold = 77.5f; //sound levels that start overstimulation: 60-85 dB
-
-            LightLevel = new Trigger();
-            LightLevel.Name = "Light";
-            LightLevel.Value = 500f; // Lux
-            LightLevel.Threshold = 1000f; // Lux. research more. Assuming indoor lighting.
+            SoundLevel = new Trigger("Sound", 50f, 77.5f); // in decibels; sound levels that start overstimulation: 60-85 dB
+            LightLevel = new Trigger("Light", 500f, 1000f); // in Lux. assuming indoor lighting
 
             HRT = "Heartrate";
             SRT = "Skin Resistance";
@@ -269,6 +271,13 @@ namespace Mist.ViewModel
             {
                 SoundLevel,
                 LightLevel
+            };
+
+            Activities = new ObservableCollection<Activity>()
+            {
+                new Activity("Play with Mr. Pet"),
+                new Activity("Deep Breathing"),
+                new Activity("Contact a Friend")
             };
 
             rnd = new Random();

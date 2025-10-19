@@ -53,7 +53,7 @@
                                    TextAlignment="Center"
                                    FontSize="10"/>
                     </Button>
-                    <Button Name="Activities">
+                    <Button Name="Activities" Command="{Binding ToggleActivitiesVisibility}">
                         <TextBlock Text="Give Rue attention." 
                                    TextWrapping="Wrap" 
                                    TextAlignment="Center"
@@ -70,6 +70,18 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+            </Grid>
+            <Grid Grid.Row="1" Margin="25" Background="LightGreen" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
+                <StackPanel>
+                    <TextBlock Text="Mr. Pet wants you to do one of the following with him: "/>
+                    <ItemsControl ItemsSource="{Binding Activities}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding Name}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </Grid>
             <StackPanel Name="Data" Grid.Column="2" Grid.RowSpan="2">
                 <Label Content="{Binding SRT}"/>

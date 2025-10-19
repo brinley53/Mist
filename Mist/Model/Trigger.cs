@@ -71,5 +71,12 @@ namespace Mist.Model
         {
             Value -= amount;
         }
+
+        public Trigger(string name, float initialValue, float threshold)
+        {
+            Name = name;
+            Value = initialValue;
+            Threshold = threshold;
+        }
     }
 }

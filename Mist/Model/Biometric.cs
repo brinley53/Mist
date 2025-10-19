@@ -91,5 +91,14 @@ namespace Mist.Model
         {
             Value -= amount;
         }
+
+        public Biometric(float initialValue, float durationCondition, int stressIndicationDirection)
+        {
+            Value = initialValue;
+            Reference = initialValue;
+            Values = [initialValue];
+            DurationCondition = durationCondition;
+            StressIndicationDirection = stressIndicationDirection;
+        }
     }
 }
