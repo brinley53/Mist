@@ -13,7 +13,8 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="9*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid>
@@ -100,7 +101,7 @@
                 <TextBlock x:Name="RiskLevel" Text="{Binding RiskLevel}"/>
             </StackPanel>
         </Grid>
-        <Grid Name="DataControls" Grid.Row="2">
+        <Grid Name="DataControls" Grid.Row="1" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
@@ -128,6 +129,20 @@
                     <Button Name="LightDec" Content="Light -" Command="{Binding LightDecCommand}"/>
                 </StackPanel>
                
+            </StackPanel>
+        </Grid>
+        <Grid Name="StressEvents" Grid.Row="2">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="2"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button Name="Stress1" Content="Stress Event 1" Command="{Binding Stress1Command}"/>
+                <Button Name="Stress2" Content="Stress Event 2" Command="{Binding Stress2Command}"/>
+                <Button Name="Stress3" Content="Stress Event 3" Command="{Binding Stress3Command}"/>
+                <Button Name="SoundRisk" Content="Toggle Sound Risk" Command="{Binding SoundRiskCommand}"/>
+                <Button Name="LightRisk" Content="Toggle Light Risk" Command="{Binding LightRiskCommand}"/>
             </StackPanel>
         </Grid>
     </Grid>

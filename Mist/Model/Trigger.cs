@@ -31,6 +31,17 @@ namespace Mist.Model
             }
         }
 
+        private float reference;
+        public float Reference
+        {
+            get { return reference; }
+            set
+            {
+                reference = value; 
+                OnPropertyChanged();
+            }
+        }
+
         private float threshold;
         public float Threshold
         {
@@ -77,6 +88,7 @@ namespace Mist.Model
             Name = name;
             Value = initialValue;
             Threshold = threshold;
+            Reference = initialValue;
         }
     }
 }
