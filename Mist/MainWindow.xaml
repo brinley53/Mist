@@ -77,7 +77,7 @@
                     <ItemsControl ItemsSource="{Binding Activities}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding Name}"/>
+                                <Button Content="{Binding Name}" Command="{Binding ActivityCommand}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

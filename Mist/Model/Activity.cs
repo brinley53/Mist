@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,9 +21,29 @@ namespace Mist.Model
             }
         }
 
-        public Activity(string name)
+        private Action activityFunction;
+        public Action ActivityFunction
+        {
+            get { return activityFunction; }
+            set
+            {
+                activityFunction = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RelayCommand ActivityCommand
+        {
+            get
+            {
+                return new RelayCommand(execute => ActivityFunction());
+            }
+        }
+
+        public Activity(string name, Action? activity = null)
         {
             Name = name;
+            ActivityFunction = activity ?? (() => { });
         }
     }
 }

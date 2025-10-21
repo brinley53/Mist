@@ -1,5 +1,6 @@
 ﻿using Mist.Model;
 using Mist.MVVM;
+using Mist.View.Activities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Mist.ViewModel
@@ -92,7 +94,7 @@ namespace Mist.ViewModel
         public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => StressTextVisibility = !StressTextVisibility);
         public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => TriggersVisibility = !TriggersVisibility);
         public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => ActivitiesVisibility = !ActivitiesVisibility);
-
+        
         // Stress event variables
         // Via Tomczak et. al
         bool eventOne; // A boolean to determine whether the following stress event is occurring: decrease in resistance is observed at delta t after a pulse increase
@@ -276,7 +278,7 @@ namespace Mist.ViewModel
             Activities = new ObservableCollection<Activity>()
             {
                 new Activity("Play with Mr. Pet"),
-                new Activity("Deep Breathing"),
+                new Activity("Deep Breathing", DeepBreathingActivity),
                 new Activity("Contact a Friend")
             };
 
@@ -397,6 +399,14 @@ namespace Mist.ViewModel
             // update ferret stress indicator
             FerretText = prompts[stressLevel];
             FerretImage = ferretFiles[stressLevel];
+        }
+
+        private void DeepBreathingActivity()
+        {
+            DeepBreathingWindow deepBreathingWindow = new DeepBreathingWindow();
+            deepBreathingWindow.Show();
+
+            // reference activity logic class
         }
 
         private void UpdateTimer_Second(object sender, EventArgs e)

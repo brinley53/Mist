@@ -14,7 +14,7 @@ namespace Mist.View
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return System.Convert.ToBoolean(value) ? Visibility.Visible : (parameter == null ? Visibility.Hidden : Visibility.Collapsed);
+            return System.Convert.ToBoolean(value) ? Visibility.Visible : parameter == null ? Visibility.Hidden : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
