@@ -32,6 +32,28 @@ namespace Mist.Model
             }
         }
 
+        private bool isReadOnly;
+        public bool IsReadOnly
+        {
+            get { return isReadOnly; }
+            set
+            {
+                isReadOnly = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string description;
+        public string Description
+        {
+            get { return description; }
+            set
+            {
+                description = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public RelayCommand ActivityCommand
         {
             get
@@ -40,10 +62,11 @@ namespace Mist.Model
             }
         }
 
-        public Activity(string name, Action? activity = null)
+        public Activity(string name, Action? activity = null, bool readOnly = false)
         {
             Name = name;
             ActivityFunction = activity ?? (() => { });
+            IsReadOnly = readOnly;
         }
     }
 }

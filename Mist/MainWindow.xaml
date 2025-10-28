@@ -84,6 +84,19 @@
                     </ItemsControl>
                 </StackPanel>
             </Grid>
+            <Grid Grid.Row="1" Margin="25" Background="LightBlue">
+                <StackPanel>
+                    <TextBlock Text="Choose an activity to edit or create new:"/>
+                    <ItemsControl ItemsSource="{Binding Activities}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Name="EditActivity" Content="{Binding Name}" Command="{Binding EditActivityCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}"/> <!-- Path needs to be relative to parent -->
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button Content="Add New"/>
+                </StackPanel>
+            </Grid>
             <StackPanel Name="Data" Grid.Column="2" Grid.RowSpan="2">
                 <Label Content="{Binding SRT}"/>
                 <TextBlock x:Name="SkinResistanceTextBlock" Text="{Binding SkinResistance.Value}"/>
@@ -99,8 +112,10 @@
                 <TextBlock x:Name="LightTextBlock" Text="{Binding LightLevel.Value}"/>
                 <Label Content="Risk Level"/>
                 <TextBlock x:Name="RiskLevel" Text="{Binding RiskLevel}"/>
+                <Button Content="Edit Activities" /> <!-- On Click, open panel to edit activities-->
             </StackPanel>
         </Grid>
+        
         <Grid Name="DataControls" Grid.Row="1" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>

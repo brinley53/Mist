@@ -99,6 +99,7 @@ namespace Mist.ViewModel
         public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => StressTextVisibility = !StressTextVisibility);
         public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => TriggersVisibility = !TriggersVisibility);
         public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => ActivitiesVisibility = !ActivitiesVisibility);
+        public RelayCommand EditActivityCommand => new RelayCommand(EditActivity);
         
         // Stress event variables
         // Via Tomczak et. al
@@ -282,9 +283,9 @@ namespace Mist.ViewModel
 
             Activities = new ObservableCollection<Activity>()
             {
-                new Activity("Play with Mr. Pet"),
-                new Activity("Deep Breathing", DeepBreathingActivity),
-                new Activity("Contact a Friend")
+                new Activity("Play with Mr. Pet", null, true),
+                new Activity("Deep Breathing", DeepBreathingActivity, true),
+                new Activity("Contact a Friend", null, true)
             };
 
             rnd = new Random();
@@ -446,6 +447,17 @@ namespace Mist.ViewModel
             trig.Value = trig.RiskCondition() ? trig.Reference : trig.Threshold;
         }
 
+        private void EditActivity(object? activity)
+        {
+            // open new panel
+            // edit activity
+        }
+
+        private void AddActivity()
+        {
+            // EditActivity, but new
+        }
+
         private void UpdateTimer_Second(object sender, EventArgs e)
         {
             // Check for change in pulse
@@ -479,21 +491,21 @@ namespace Mist.ViewModel
 
 
                 // Calculate next heartrate value
-                int heartrateChange = rnd.Next(0, 4);
-            if (Heartrate.Value < 60)
-            {
-                Heartrate.Value += heartrateChange;
-            }
-            else if (Heartrate.Value > 200)
-            {
-                Heartrate.Value -= heartrateChange;
-            }
-            else
-            {
-                var signs = new[] { -1, 1 };
-                int sign = rnd.Next(2);
-                Heartrate.Value += signs[sign] * heartrateChange;
-            }
+            //    int heartrateChange = rnd.Next(0, 4);
+            //if (Heartrate.Value < 60)
+            //{
+            //    Heartrate.Value += heartrateChange;
+            //}
+            //else if (Heartrate.Value > 200)
+            //{
+            //    Heartrate.Value -= heartrateChange;
+            //}
+            //else
+            //{
+            //    var signs = new[] { -1, 1 };
+            //    int sign = rnd.Next(2);
+            //    Heartrate.Value += signs[sign] * heartrateChange;
+            //}
 
             Heartrate.Values.Add(Heartrate.Value);
             BodyTemperature.Values.Add(BodyTemperature.Value);
