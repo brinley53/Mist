@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mist" 
-        xmlns:v="clr-namespace:Mist.View"
+        xmlns:v="clr-namespace:Mist.View" xmlns:uc="clr-namespace:Mist.View.UserControls"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="480">
     <Window.Resources>
@@ -90,7 +90,7 @@
                     <ItemsControl ItemsSource="{Binding Activities}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Name="EditActivity" Content="{Binding Name}" Command="{Binding EditActivityCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}"/> <!-- Path needs to be relative to parent -->
+                                <Button Name="EditActivity" Content="{Binding Name}" Command="{Binding DataContext.EditActivityCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -115,7 +115,8 @@
                 <Button Content="Edit Activities" /> <!-- On Click, open panel to edit activities-->
             </StackPanel>
         </Grid>
-        
+
+        <uc:ActivityUserControl ActivityData="{Binding SelectedActivity}" Visibility="{Binding SelectedActivity.IsEditing, Converter={StaticResource BoolVisConverter}}"/>
         <Grid Name="DataControls" Grid.Row="1" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>

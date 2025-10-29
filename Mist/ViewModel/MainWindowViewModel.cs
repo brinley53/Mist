@@ -241,6 +241,17 @@ namespace Mist.ViewModel
             }
         }
 
+        private Activity selectedActivity;
+        public Activity SelectedActivity
+        {
+            get { return selectedActivity; }
+            set
+            {
+                selectedActivity = value;
+                OnPropertyChanged();
+            }
+        }
+
         int heartrateEventTimer;
         int resistanceEventTimer;
         int tempEventTimer;
@@ -283,10 +294,12 @@ namespace Mist.ViewModel
 
             Activities = new ObservableCollection<Activity>()
             {
-                new Activity("Play with Mr. Pet", null, true),
-                new Activity("Deep Breathing", DeepBreathingActivity, true),
-                new Activity("Contact a Friend", null, true)
+                new Activity("Play with Mr. Pet", null, false, false),
+                new Activity("Deep Breathing", DeepBreathingActivity, false, false),
+                new Activity("Contact a Friend", null, false, false)
             };
+
+            SelectedActivity = new Activity("Starter");
 
             rnd = new Random();
 
@@ -447,10 +460,10 @@ namespace Mist.ViewModel
             trig.Value = trig.RiskCondition() ? trig.Reference : trig.Threshold;
         }
 
-        private void EditActivity(object? activity)
+        private void EditActivity(object activity)
         {
-            // open new panel
-            // edit activity
+            SelectedActivity = (Activity)activity;
+            SelectedActivity.IsEditing = true;
         }
 
         private void AddActivity()

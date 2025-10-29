@@ -32,13 +32,24 @@ namespace Mist.Model
             }
         }
 
-        private bool isReadOnly;
-        public bool IsReadOnly
+        private bool canEdit;
+        public bool CanEdit
         {
-            get { return isReadOnly; }
+            get { return canEdit; }
             set
             {
-                isReadOnly = value;
+                canEdit = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool canDelete;
+        public bool CanDelete
+        {
+            get { return canDelete; }
+            set
+            {
+                canDelete = value;
                 OnPropertyChanged();
             }
         }
@@ -54,6 +65,17 @@ namespace Mist.Model
             }
         }
 
+        private bool isEditing;
+        public bool IsEditing
+        {
+            get { return isEditing; }
+            set
+            {
+                isEditing = value;
+                OnPropertyChanged();
+            }
+        }
+
         public RelayCommand ActivityCommand
         {
             get
@@ -62,11 +84,13 @@ namespace Mist.Model
             }
         }
 
-        public Activity(string name, Action? activity = null, bool readOnly = false)
+        public Activity(string name, Action? activity = null, bool canEdit = true, bool canDelete = true)
         {
             Name = name;
             ActivityFunction = activity ?? (() => { });
-            IsReadOnly = readOnly;
+            CanEdit = canEdit;
+            IsEditing = false;
+            CanDelete = canDelete;
         }
     }
 }

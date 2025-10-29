@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Mist.View.UserControls.ActivityUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mist.View.UserControls"
+             xmlns:v="clr-namespace:Mist.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="450">
+    <UserControl.Resources>
+        <v:BooleanToVisibilityConverter x:Key="BoolVisConverter"/>
+    </UserControl.Resources>
+    <Grid x:Name="Control" Background="Aquamarine" Visibility="Visible">
+        <TextBox x:Name="Name" HorizontalAlignment="Left" Margin="38,66,0,0" TextWrapping="Wrap" Text="{Binding ActivityData.Name, RelativeSource={RelativeSource AncestorType=UserControl}}" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="Description" HorizontalAlignment="Left" Margin="38,113,0,0" TextWrapping="Wrap" Text="{Binding ActivityData.Description, RelativeSource={RelativeSource AncestorType=UserControl}}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Click="Close_Click"/>
+        <!-- Visibility for Save and Delete buttons will depend on isReadOnly property-->
+        <Button Content="Save" HorizontalAlignment="Left" Margin="377,398,0,0" VerticalAlignment="Top" Visibility="{Binding ActivityData.CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolVisConverter}}"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="49,398,0,0" VerticalAlignment="Top" Visibility="{Binding ActivityData.CanDelete, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolVisConverter}}"/>
+    </Grid>
+</UserControl>
