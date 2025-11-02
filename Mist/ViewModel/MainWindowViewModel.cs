@@ -91,9 +91,9 @@ namespace Mist.ViewModel
         public RelayCommand SoundDecCommand => new RelayCommand(execute => SoundLevel.Decrease(10f));
         public RelayCommand LightIncCommand => new RelayCommand(execute => LightLevel.Increase(500f));
         public RelayCommand LightDecCommand => new RelayCommand(execute => LightLevel.Decrease(500f));
-        public RelayCommand Stress1Command => new RelayCommand(execute => GenerateStressEvent(1));
-        public RelayCommand Stress2Command => new RelayCommand(execute => GenerateStressEvent(2));
-        public RelayCommand Stress3Command => new RelayCommand(execute => GenerateStressEvent(3));
+        public RelayCommand Stress1Command => new RelayCommand(execute => GenerateStressEvent(Heartrate));
+        public RelayCommand Stress2Command => new RelayCommand(execute => GenerateStressEvent(SkinResistance));
+        public RelayCommand Stress3Command => new RelayCommand(execute => GenerateStressEvent(BodyTemperature));
         public RelayCommand SoundRiskCommand => new RelayCommand(execute => GenerateRisk(SoundLevel));
         public RelayCommand LightRiskCommand => new RelayCommand(execute => GenerateRisk(LightLevel));
         public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => StressTextVisibility = !StressTextVisibility);
@@ -294,7 +294,7 @@ namespace Mist.ViewModel
 
             Activities = new ObservableCollection<Activity>()
             {
-                new Activity("Play with Mr. Pet", null, false, false),
+                new Activity("Play with Mr. Pet", PlayActivity, false, false),
                 new Activity("Deep Breathing", DeepBreathingActivity, false, false),
                 new Activity("Contact a Friend", null, false, false)
             };
@@ -430,28 +430,15 @@ namespace Mist.ViewModel
             // reference activity logic class
         }
 
-        private void GenerateStressEvent(int num)
+        private void PlayActivity()
         {
-            switch (num)
-            {
-                case 1: // heart increase, then resistance decrease
-                    Heartrate.Increase(Heartrate.DifferenceThreshold*4);
-                    Thread.Sleep(100);
-                    SkinResistance.Decrease(SkinResistance.DifferenceThreshold*4);
-                    break;
-                case 2: // resistance decrease, then body temp decrease
-                    SkinResistance.Decrease(SkinResistance.DifferenceThreshold*4);
-                    Thread.Sleep(100);
-                    BodyTemperature.Decrease(BodyTemperature.DifferenceThreshold * 4);
-                    break;
-                case 3: // heart increase, then body temp decrease
-                    Heartrate.Increase(Heartrate.DifferenceThreshold * 4);
-                    Thread.Sleep(100);
-                    BodyTemperature.Decrease(BodyTemperature.DifferenceThreshold * 4);
-                    break;
-                default:
-                    break;
-            }
+            PlayWindow playWindow = new PlayWindow();
+            playWindow.Show();
+        }
+
+        private void GenerateStressEvent(Biometric bio)
+        {
+            bio.Value = bio.StressCondition() ? bio.Reference : bio.Value + bio.DifferenceThreshold * 4 * bio.StressIndicationDirection;
         }
 
         private void GenerateRisk(Trigger trig)

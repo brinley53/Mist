@@ -16,6 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="images\ferret_pet_3.png" />
+    <Resource Include="images\ferret_pet_4.png" />
+    <Resource Include="images\ferret_play_0.png" />
+    <Resource Include="images\ferret_pet_1.png" />
+    <Resource Include="images\ferret_pet_2.png" />
     <Resource Include="images\ferret.png" />
     <Resource Include="images\ferret_stress_1.png" />
     <Resource Include="images\ferret_stress_2.png" />

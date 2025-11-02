@@ -14,7 +14,7 @@ namespace Mist.View
         public object Convert(
             object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new BitmapImage(new Uri($"/Images/{value}.png", UriKind.Relative));
+            return new BitmapImage(new Uri($"pack://application:,,,/Images/{value}.png"));
         }
 
         public object ConvertBack(
