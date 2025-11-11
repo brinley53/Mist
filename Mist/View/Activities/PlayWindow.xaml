@@ -11,10 +11,14 @@
     </Window.Resources>
     <Grid>
         <Image x:Name="Ferret" HorizontalAlignment="Left" Height="400" Margin="20,234,0,0" VerticalAlignment="Top" Width="400"  Source="{Binding FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
+
         <Border Width="200" Height="100" Background="Transparent"
                 MouseEnter="ferret_MouseEnter" 
                 MouseLeave="ferret_MouseLeave"
                 MouseLeftButtonDown="ferret_MouseLeftButtonDown"
                 MouseLeftButtonUp="ferret_MouseLeftButtonUp" Margin="123,381,157,303"/>
+        <Canvas>
+            <Image x:Name="Treat" Source="/images/treat.png" Height="75" Width="75" Canvas.Left="200" Canvas.Top="600" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" />
+        </Canvas>
     </Grid>
 </Window>
