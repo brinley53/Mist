@@ -54,6 +54,17 @@ namespace Mist.ViewModel
 
         private int ferretIndex = 0;
 
+        private bool isEatingComplete;
+        public bool IsEatingComplete
+        {
+            get { return isEatingComplete; }
+            set
+            {
+                isEatingComplete = value;
+                OnPropertyChanged();
+            }
+        }
+
         public PlayViewModel()
         {
             ferretImage = ferretFiles[ferretIndex];
