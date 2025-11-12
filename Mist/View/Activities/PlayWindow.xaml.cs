@@ -86,6 +86,9 @@ namespace Mist.View.Activities
 
         private void Treat_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            var treat = (UIElement)sender;
+            Canvas.SetLeft(treat, currentTreatOriginalLeft);
+            Canvas.SetTop(treat, currentTreatOriginalTop);
             draggingTreat = false;
             ((UIElement)sender).ReleaseMouseCapture();
         }
