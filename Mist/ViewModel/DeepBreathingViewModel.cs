@@ -14,8 +14,8 @@ namespace Mist.ViewModel
     public class DeepBreathingViewModel : ViewModelBase
     {
         private const int inhaleTime = 4;
-        private const int holdTime = 7;
-        private const int exhaleTime = 8;
+        private const int holdTime = 4;
+        private const int exhaleTime = 4;
         private const int repeats = 1;
 
         private int instructionIndex = 2;
@@ -67,7 +67,19 @@ namespace Mist.ViewModel
             }
         }
 
-        private List<string> instructions = new List<string> { "Ready?", "Do exercise again?", "Inhale", "Hold", "Exhale" };
+        private List<string> ferretFiles = new List<string> { "inhale", "holdbreath2", "exhale", "holdbreath1" };
+        private string ferretImage;
+        public string FerretImage
+        {
+            get { return ferretImage; }
+            set
+            {
+                ferretImage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<string> instructions = new List<string> { "Ready?", "Do exercise again?", "Inhale", "Hold", "Exhale", "Hold"};
         private bool start;
 
         public RelayCommand ContinueCommand => new RelayCommand(execute => resetExercise());
@@ -79,6 +91,7 @@ namespace Mist.ViewModel
             IsExerciseComplete = true;
             start = false;
             ContinueButtonText = startButtonText;
+            ferretImage = ferretFiles[3];
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += new EventHandler(UpdateTimer_Second);
@@ -88,7 +101,7 @@ namespace Mist.ViewModel
 
         private void UpdateTimer_Second(object sender, EventArgs e)
         {
-            if (!start)
+            if (!start || IsExerciseComplete)
             {
                 return;
             }
@@ -96,12 +109,13 @@ namespace Mist.ViewModel
             if (Time <= 0)
             {
                 instructionIndex += 1;
-                if (instructionIndex > 4) // Finished exhale
+                if (instructionIndex > 5) // Finished exhale
                 {
                     if (repeat == 0) // Finished exercise
                     {
                         IsExerciseComplete = true;
                         Instruction = instructions[1];
+                        FerretImage = ferretFiles[1];
                         return;
                     } else
                     {
@@ -109,6 +123,7 @@ namespace Mist.ViewModel
                         instructionIndex = 2;
                     }
                 }
+                FerretImage = ferretFiles[instructionIndex - 2];
                 Instruction = instructions[instructionIndex];
                 Time = computeNextMaxTime(instructionIndex);
             }
@@ -119,6 +134,7 @@ namespace Mist.ViewModel
         {
             IsExerciseComplete = false;
             start = true;
+            FerretImage = ferretFiles[0];
             Time = inhaleTime;
             instructionIndex = 2;
             Instruction = instructions[instructionIndex];

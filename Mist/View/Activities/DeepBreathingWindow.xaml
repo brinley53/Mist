@@ -12,8 +12,9 @@
         <v:BooleanToVisibilityConverter x:Key="BoolVisConverter"/>
     </Window.Resources>
     <Grid>
-        <TextBlock Name="Instruction" Text="{Binding Instruction}" Height="50" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,238,0,0"/>
-        <TextBlock Name="Time" Text="{Binding Time}" VerticalAlignment="Top" HorizontalAlignment="Center" Height="15" Width="16" Margin="0,315,0,0"/>
+        <Image Height="400" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}" Margin="0,-202,0,202" />
+        <TextBlock Name="Instruction" Text="{Binding Instruction}" Height="50" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,298,0,0" TextAlignment="Center"/>
+        <TextBlock Name="Time" Text="{Binding Time}" VerticalAlignment="Top" HorizontalAlignment="Center" Height="15" Width="16" Margin="0,348,0,0"/>
         <Button Name="Continue" Content="{Binding ContinueButtonText}" Height="50" Width="75" VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding ContinueCommand}" Visibility="{Binding IsExerciseComplete, Converter={StaticResource BoolVisConverter}}" Margin="128,430,0,0"/>
         <Button Name="Exit" Content="Exit" Height="50" Width="75" VerticalAlignment="Top" HorizontalAlignment="Left" Click="CloseButton_Click" Visibility="{Binding IsExerciseComplete, Converter={StaticResource BoolVisConverter}}" Margin="268,430,0,0"/>
     </Grid>
