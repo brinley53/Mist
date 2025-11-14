@@ -115,7 +115,7 @@ namespace Mist.ViewModel
                     {
                         IsExerciseComplete = true;
                         Instruction = instructions[1];
-                        FerretImage = ferretFiles[1];
+                        FerretImage = ferretFiles[3];
                         return;
                     } else
                     {

@@ -84,7 +84,7 @@ namespace Mist.Model
             }
         }
 
-        public Activity(string name, Action? activity = null, bool canEdit = true, bool canDelete = true)
+        public Activity(string name, Action? activity = null, bool canEdit = false, bool canDelete = false)
         {
             Name = name;
             ActivityFunction = activity ?? (() => { });

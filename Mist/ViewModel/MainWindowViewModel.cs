@@ -96,7 +96,7 @@ namespace Mist.ViewModel
         public RelayCommand Stress3Command => new RelayCommand(execute => GenerateStressEvent(BodyTemperature));
         public RelayCommand SoundRiskCommand => new RelayCommand(execute => GenerateRisk(SoundLevel));
         public RelayCommand LightRiskCommand => new RelayCommand(execute => GenerateRisk(LightLevel));
-        public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => StressTextVisibility = !StressTextVisibility);
+        public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => AddressStress());
         public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => TriggersVisibility = !TriggersVisibility);
         public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => ActivitiesVisibility = !ActivitiesVisibility);
         public RelayCommand EditActivityCommand => new RelayCommand(EditActivity);
@@ -118,6 +118,7 @@ namespace Mist.ViewModel
             }
         }
 
+        private int stressAddressedTimer = 0;
         private bool stressTextVisibility;
         public bool StressTextVisibility
         {
@@ -128,6 +129,7 @@ namespace Mist.ViewModel
                 OnPropertyChanged();
             }
         }
+
 
         private bool triggersVisibility;
         public bool TriggersVisibility
@@ -294,9 +296,13 @@ namespace Mist.ViewModel
 
             Activities = new ObservableCollection<Activity>()
             {
-                new Activity("Play with Mr. Pet", PlayActivity, false, false),
-                new Activity("Deep Breathing", DeepBreathingActivity, false, false),
-                new Activity("Contact a Friend", null, false, false)
+                new Activity("Play with Mr. Pet", PlayActivity),
+                new Activity("Deep Breathing", DeepBreathingActivity),
+                new Activity("Contact a Friend"),
+                new Activity("Use Fidget Toys", BaseActivity),
+                new Activity("Find a Safe Space", BaseActivity),
+                new Activity("Listen to Calming Music", BaseActivity), 
+                new Activity("Exercise", BaseActivity)
             };
 
             SelectedActivity = new Activity("Starter");
@@ -414,6 +420,11 @@ namespace Mist.ViewModel
 
             // Calculate stress level
             StressLevel = Convert.ToInt32(eventOne) + Convert.ToInt32(eventTwo) + Convert.ToInt32(eventThree);
+            if (stressAddressedTimer > 0)
+            {
+                stressAddressedTimer -= 1;
+                return;
+            }
             StressTextVisibility = StressLevel > 0;
             RiskLevel = Convert.ToInt32(SoundLevel.RiskCondition()) + Convert.ToInt32(LightLevel.RiskCondition());
 
@@ -422,9 +433,23 @@ namespace Mist.ViewModel
             FerretImage = ferretFiles[stressLevel];
         }
 
+        private void AddressStress(int duration=120)
+        {
+            StressTextVisibility = false;
+            stressAddressedTimer = duration; // duration in seconds
+            TriggersVisibility = false;
+            ActivitiesVisibility = false;
+        }
+
+        private void BaseActivity()
+        {
+            AddressStress();
+        }
+
         private void DeepBreathingActivity()
         {
             DeepBreathingWindow deepBreathingWindow = new DeepBreathingWindow();
+            BaseActivity();
             deepBreathingWindow.Show();
 
             // reference activity logic class
@@ -433,6 +458,7 @@ namespace Mist.ViewModel
         private void PlayActivity()
         {
             PlayWindow playWindow = new PlayWindow();
+            BaseActivity();
             playWindow.Show();
         }
 

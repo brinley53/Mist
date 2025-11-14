@@ -23,8 +23,8 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid Name="StressOptions" Margin="0,30,0,0" Height="150" VerticalAlignment="Top" Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}">
@@ -74,7 +74,7 @@
             </Grid>
             <Grid Grid.Row="1" Margin="25" Background="LightGreen" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
                 <StackPanel>
-                    <TextBlock Text="Mr. Pet wants you to do one of the following with him: "/>
+                    <TextBlock Text="Rue wants you to do one of the following with her: "/>
                     <ItemsControl ItemsSource="{Binding Activities}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
