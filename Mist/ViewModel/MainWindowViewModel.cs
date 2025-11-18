@@ -100,6 +100,7 @@ namespace Mist.ViewModel
         public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => TriggersVisibility = !TriggersVisibility);
         public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => ActivitiesVisibility = !ActivitiesVisibility);
         public RelayCommand EditActivityCommand => new RelayCommand(EditActivity);
+        public RelayCommand ViewTriggerCommand => new RelayCommand(ViewTrigger);
         
         // Stress event variables
         // Via Tomczak et. al
@@ -176,7 +177,8 @@ namespace Mist.ViewModel
             }
         }
 
-        private List<String> prompts = new List<string> { "", "Mr. Pet is feeling uneasy.", "Stress 2 calming text", "Stress 3 calming text" };
+        private List<String> prompts = new List<string> { "", "Rue is feeling uneasy.", "Rue is feeling tense.", "Rue is very stressed." };
+        private List<String> riskPrompts = new List<string> { "loud", "bright" };
         private string ferretText;
         public string FerretText
         {
@@ -254,6 +256,17 @@ namespace Mist.ViewModel
             }
         }
 
+        private Trigger selectedTrigger;
+        public Trigger SelectedTrigger
+        {
+            get { return selectedTrigger; }
+            set
+            {
+                selectedTrigger = value;
+                OnPropertyChanged();
+            }
+        }
+
         int heartrateEventTimer;
         int resistanceEventTimer;
         int tempEventTimer;
@@ -276,7 +289,14 @@ namespace Mist.ViewModel
             tempEventTimer = 0;
 
             SoundLevel = new Trigger("Sound", 50f, 77.5f); // in decibels; sound levels that start overstimulation: 60-85 dB
+            SoundLevel.Mitigations.Add("Find a safer space with less sound.");
+            SoundLevel.Mitigations.Add("Turn down the sound.");
+            SoundLevel.Mitigations.Add("Use headphones or earplugs.");
             LightLevel = new Trigger("Light", 500f, 1000f); // in Lux. assuming indoor lighting
+            LightLevel.Mitigations.Add("Find a safer space with softer light.");
+            LightLevel.Mitigations.Add("Turn down the light.");
+
+            SelectedTrigger = SoundLevel;
 
             HRT = "Heartrate";
             SRT = "Skin Resistance";
@@ -430,7 +450,17 @@ namespace Mist.ViewModel
 
             // update ferret stress indicator
             FerretText = prompts[stressLevel];
-            FerretImage = ferretFiles[stressLevel];
+            if (RiskLevel > 1)
+            {
+                FerretText += " Rue noticed it is very loud and bright.";
+            } else if (SoundLevel.RiskCondition())
+            {
+                FerretText += " Rue noticed it is very loud.";
+            } else if (LightLevel.RiskCondition())
+            {
+                FerretText += " Rue noticed it is very bright.";
+            }
+                FerretImage = ferretFiles[stressLevel];
         }
 
         private void AddressStress(int duration=120)
@@ -482,6 +512,12 @@ namespace Mist.ViewModel
         private void AddActivity()
         {
             // EditActivity, but new
+        }
+
+        private void ViewTrigger(object trigger)
+        {
+            SelectedTrigger = (Trigger)trigger;
+            SelectedTrigger.IsViewing = true;
         }
 
         private void UpdateTimer_Second(object sender, EventArgs e)

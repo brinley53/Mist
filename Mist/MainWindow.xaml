@@ -27,13 +27,13 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid Name="StressOptions" Margin="0,30,0,0" Height="150" VerticalAlignment="Top" Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}">
+            <Grid Name="StressOptions" Margin="0,30,0,0" Height="150" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*"/>
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding FerretText}" Width="120"/>
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding FerretText}" Width="200" Height="50"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}">
                     <StackPanel.Resources>
                         <Style TargetType="Button">
                             <Setter Property="Margin" Value="10,0,10,10"/>
@@ -49,7 +49,7 @@
                                    Width="40"/>
                     </Button>
                     <Button Name="ListTriggers" Command="{Binding ToggleTriggersVisibility}">
-                        <TextBlock Text="See what's bothering Rue." 
+                        <TextBlock Text="Manage Rue's triggers." 
                                    TextWrapping="Wrap" 
                                    TextAlignment="Center"
                                    FontSize="10"/>
@@ -64,14 +64,18 @@
             </Grid>
             <Image Grid.Row="1" Height="400" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
             <Grid Grid.Row="1" Margin="25" Background="LightPink" Visibility="{Binding TriggersVisibility, Converter={StaticResource BoolVisConverter}}">
-                <ItemsControl ItemsSource="{Binding Triggers}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" Visibility="{Binding Risk, Converter={StaticResource BoolVisConverter}, ConverterParameter='Collapse'}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <StackPanel>
+                    <TextBlock Text="These triggers may be bothering Rue:"/>
+                    <ItemsControl ItemsSource="{Binding Triggers}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.ViewTriggerCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}" Content="{Binding Name}" Visibility="{Binding Risk, Converter={StaticResource BoolVisConverter}, ConverterParameter='Collapse'}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </Grid>
+            
             <Grid Grid.Row="1" Margin="25" Background="LightGreen" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
                 <StackPanel>
                     <TextBlock Text="Rue wants you to do one of the following with her: "/>
@@ -83,7 +87,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-            </Grid>
+            </Grid> 
             <!--
             <Grid Grid.Row="1" Margin="25" Background="LightBlue">
                 <StackPanel>
@@ -118,6 +122,8 @@
             </StackPanel>
         </Grid>
 
+
+        <uc:TriggerUserControl TriggerData="{Binding SelectedTrigger}" Visibility="{Binding SelectedTrigger.IsViewing, Converter={StaticResource BoolVisConverter}}"/>
         <!--<uc:ActivityUserControl ActivityData="{Binding SelectedActivity}" Visibility="{Binding SelectedActivity.IsEditing, Converter={StaticResource BoolVisConverter}}"/>-->
         <Grid Name="DataControls" Grid.Row="1" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

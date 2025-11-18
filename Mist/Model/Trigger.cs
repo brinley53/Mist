@@ -20,6 +20,28 @@ namespace Mist.Model
             }
         }
 
+        private List<String> mitigations = new List<String>();
+        public List<String> Mitigations
+        {
+            get { return mitigations; }
+            set
+            {
+                mitigations = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool isViewing;
+        public bool IsViewing
+        {
+            get { return isViewing; }
+            set
+            {
+                isViewing = value;
+                OnPropertyChanged();
+            }
+        }
+
         private float _value;
         public float Value
         {
@@ -89,6 +111,7 @@ namespace Mist.Model
             Value = initialValue;
             Threshold = threshold;
             Reference = initialValue;
+            IsViewing = false;
         }
     }
 }
