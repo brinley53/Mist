@@ -445,7 +445,7 @@ namespace Mist.ViewModel
                 stressAddressedTimer -= 1;
                 return;
             }
-            StressTextVisibility = StressLevel > 0;
+            StressTextVisibility = StressLevel > 0 || RiskLevel > 0;
             RiskLevel = Convert.ToInt32(SoundLevel.RiskCondition()) + Convert.ToInt32(LightLevel.RiskCondition());
 
             // update ferret stress indicator

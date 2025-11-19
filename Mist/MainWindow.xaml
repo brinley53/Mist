@@ -32,7 +32,7 @@
                     <RowDefinition Height="5*"/>
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding FerretText}" Width="200" Height="50"/>
+                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding FerretText}" Width="200" Height="50"  Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}"/>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}">
                     <StackPanel.Resources>
                         <Style TargetType="Button">
