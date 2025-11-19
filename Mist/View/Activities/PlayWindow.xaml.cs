@@ -98,8 +98,8 @@ namespace Mist.View.Activities
             Rect rect1 = VisualTreeHelper.GetDescendantBounds(element1);
             Rect rect2 = VisualTreeHelper.GetDescendantBounds(element2);
 
-            GeneralTransform transform1 = element1.TransformToVisual(Application.Current.MainWindow);
-            GeneralTransform transform2 = element2.TransformToVisual(Application.Current.MainWindow);
+            GeneralTransform transform1 = element1.TransformToVisual(FoodBowl);
+            GeneralTransform transform2 = element2.TransformToVisual(Window.GetWindow(element2));
 
             Rect bounds1 = transform1.TransformBounds(rect1);
             Rect bounds2 = transform2.TransformBounds(rect2);
