@@ -8,6 +8,17 @@
         mc:Ignorable="d"
         Title="ContactFriendWindow" Height="800" Width="480">
     <Grid>
-        <uc:FormUserControl Text="I feel..." Prompts="{Binding Prompts}" Height="500" Width="300"/>
+        <ScrollViewer>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Help Rue write a message to someone close." TextAlignment="Center" FontSize="20" Margin="25"/>
+                <uc:FormUserControl x:Name="People" Title="Dear" Text="{Binding People, Mode=TwoWay}" Prompts="{Binding PeoplePrompts}"/>
+                <uc:FormUserControl x:Name="Feeling" Title="I feel" Text="{Binding Feeling, Mode=TwoWay}" Prompts="{Binding FeelingPrompts}"/>
+                <uc:FormUserControl x:Name="Reason" Title="because of" Text="{Binding Reason, Mode=TwoWay}" Prompts="{Binding ReasonPrompts}"/>
+                <uc:FormUserControl x:Name="Action" Title="I need" Text="{Binding Action, Mode=TwoWay}" Prompts="{Binding ActionPrompts}"/>
+                <TextBlock Text="Here is the message you created:" TextAlignment="Center" FontSize="20" Margin="20"/>
+                <TextBox Text="{Binding Message}" Height="75" Margin="10" TextWrapping="Wrap"/>
+                <Image Source="/images/ferret_play_0.png"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -18,7 +18,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock Margin="10" Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}" TextAlignment="Center" FontSize="20" VerticalAlignment="Center"/>
+            <TextBlock Margin="10" Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" TextAlignment="Center" FontSize="20" VerticalAlignment="Center"/>
             <ItemsControl ItemsSource="{Binding Prompts, RelativeSource={RelativeSource AncestorType=UserControl}}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -31,7 +31,7 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <TextBox Margin="10" x:Name="LoadPromptTextBox" Text="" Height="75"/>
+            <TextBox Margin="10" x:Name="LoadPromptTextBox" Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="50"/>
         </StackPanel>
     </Grid>
 </UserControl>

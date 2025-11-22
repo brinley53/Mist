@@ -21,8 +21,15 @@ namespace Mist.View.UserControls
     /// </summary>
     public partial class FormUserControl : UserControl
     {
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(FormUserControl));
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(FormUserControl));
         public static readonly DependencyProperty PromptsProperty = DependencyProperty.Register("Prompts", typeof(List<string>), typeof(FormUserControl));
+
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
 
         public string Text
         {
@@ -45,8 +52,8 @@ namespace Mist.View.UserControls
         {
             Button button = (Button)sender;
             if (button != null)
-            { 
-                LoadPromptTextBox.Text = "I feel " + (string)button.Content;
+            {
+                Text = Title + " " + (string)button.Content;
             }
         }
     }

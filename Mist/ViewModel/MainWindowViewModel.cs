@@ -316,9 +316,9 @@ namespace Mist.ViewModel
 
             Activities = new ObservableCollection<Activity>()
             {
-                new Activity("Play with Mr. Pet", PlayActivity),
+                new Activity("Play with Rue", PlayActivity),
                 new Activity("Deep Breathing", DeepBreathingActivity),
-                new Activity("Contact a Friend"),
+                new Activity("Contact a Friend", MessageFriendActivity),
                 new Activity("Use Fidget Toys", BaseActivity),
                 new Activity("Find a Safe Space", BaseActivity),
                 new Activity("Listen to Calming Music", BaseActivity), 
@@ -483,6 +483,13 @@ namespace Mist.ViewModel
             deepBreathingWindow.Show();
 
             // reference activity logic class
+        }
+
+        private void MessageFriendActivity()
+        {
+            ContactFriendWindow contactFriendWindow = new ContactFriendWindow();
+            BaseActivity();
+            contactFriendWindow.Show();
         }
 
         private void PlayActivity()
