@@ -26,5 +26,10 @@ namespace Mist.View.Activities
             ContactFriendViewModel vm = new ContactFriendViewModel();
             DataContext = vm;
         }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

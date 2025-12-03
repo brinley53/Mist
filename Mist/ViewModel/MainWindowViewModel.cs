@@ -473,7 +473,8 @@ namespace Mist.ViewModel
 
         private void BaseActivity()
         {
-            AddressStress();
+            // commented out in case individual wants to do more than one thing
+            //AddressStress(); 
         }
 
         private void DeepBreathingActivity()
