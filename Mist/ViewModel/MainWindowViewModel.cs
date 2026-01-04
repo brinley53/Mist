@@ -13,6 +13,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -58,8 +59,8 @@ namespace Mist.ViewModel
             }
         }
 
-        private Trigger soundLevel;
-        public Trigger SoundLevel
+        private Model.Trigger soundLevel;
+        public Model.Trigger SoundLevel
         {
             get { return soundLevel; }
             set
@@ -69,8 +70,8 @@ namespace Mist.ViewModel
             }
         }
 
-        private Trigger lightLevel;
-        public Trigger LightLevel
+        private Model.Trigger lightLevel;
+        public Model.Trigger LightLevel
         {
             get { return lightLevel; }
             set
@@ -223,8 +224,8 @@ namespace Mist.ViewModel
             }
         }
 
-        private ObservableCollection<Trigger> triggers;
-        public ObservableCollection<Trigger> Triggers
+        private ObservableCollection<Model.Trigger> triggers;
+        public ObservableCollection<Model.Trigger> Triggers
         {
             get { return triggers; }
             set
@@ -256,8 +257,8 @@ namespace Mist.ViewModel
             }
         }
 
-        private Trigger selectedTrigger;
-        public Trigger SelectedTrigger
+        private Model.Trigger selectedTrigger;
+        public Model.Trigger SelectedTrigger
         {
             get { return selectedTrigger; }
             set
@@ -288,11 +289,11 @@ namespace Mist.ViewModel
             BodyTemperature.DifferenceThreshold = 0.1f; //Degrees Celsius
             tempEventTimer = 0;
 
-            SoundLevel = new Trigger("Sound", 50f, 77.5f); // in decibels; sound levels that start overstimulation: 60-85 dB
+            SoundLevel = new Model.Trigger("Sound", 50f, 77.5f); // in decibels; sound levels that start overstimulation: 60-85 dB
             SoundLevel.Mitigations.Add("Find a safer space with less sound.");
             SoundLevel.Mitigations.Add("Turn down the sound.");
             SoundLevel.Mitigations.Add("Use headphones or earplugs.");
-            LightLevel = new Trigger("Light", 500f, 1000f); // in Lux. assuming indoor lighting
+            LightLevel = new Model.Trigger("Light", 500f, 1000f); // in Lux. assuming indoor lighting
             LightLevel.Mitigations.Add("Find a safer space with softer light.");
             LightLevel.Mitigations.Add("Turn down the light.");
 
@@ -308,7 +309,7 @@ namespace Mist.ViewModel
             stressLevel = 0; // 0 is baseline, no stress; 
             ferretImage = ferretFiles[0];
 
-            Triggers = new ObservableCollection<Trigger>() 
+            Triggers = new ObservableCollection<Model.Trigger>() 
             {
                 SoundLevel,
                 LightLevel
@@ -446,6 +447,11 @@ namespace Mist.ViewModel
                 return;
             }
             StressTextVisibility = StressLevel > 0 || RiskLevel > 0;
+            if (StressTextVisibility == false)
+            {
+                TriggersVisibility = false;
+                ActivitiesVisibility = false;
+            }
             RiskLevel = Convert.ToInt32(SoundLevel.RiskCondition()) + Convert.ToInt32(LightLevel.RiskCondition());
 
             // update ferret stress indicator
@@ -505,9 +511,9 @@ namespace Mist.ViewModel
             bio.Value = bio.StressCondition() ? bio.Reference : bio.Value + bio.DifferenceThreshold * 4 * bio.StressIndicationDirection;
         }
 
-        private void GenerateRisk(Trigger trig)
+        private void GenerateRisk(Model.Trigger trig)
         {
-            // Toggle a risk condition for the specified trigger
+            // Toggle a risk condition for the specified Model.Trigger
             trig.Value = trig.RiskCondition() ? trig.Reference : trig.Threshold;
         }
 
@@ -524,7 +530,7 @@ namespace Mist.ViewModel
 
         private void ViewTrigger(object trigger)
         {
-            SelectedTrigger = (Trigger)trigger;
+            SelectedTrigger = (Model.Trigger)trigger;
             SelectedTrigger.IsViewing = true;
         }
 

@@ -33,6 +33,7 @@ namespace Mist.View.Activities
         public PlayWindow()
         {
             InitializeComponent();
+            Mouse.OverrideCursor = null;
             vm = new PlayViewModel();
             DataContext = vm;
             draggingTreat = false;
@@ -46,11 +47,13 @@ namespace Mist.View.Activities
         private void ferret_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             vm.Click = true;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
         }
 
         private void ferret_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             vm.Click = false;
+            Mouse.OverrideCursor = null;
         }
 
         private void ferret_MouseEnter(object sender, MouseEventArgs e)
@@ -82,6 +85,8 @@ namespace Mist.View.Activities
 
             draggingTreat = true;
             treat.CaptureMouse();
+
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
         }
 
         private void Treat_MouseUp(object sender, MouseButtonEventArgs e)
@@ -91,6 +96,8 @@ namespace Mist.View.Activities
             Canvas.SetTop(treat, currentTreatOriginalTop);
             draggingTreat = false;
             ((UIElement)sender).ReleaseMouseCapture();
+
+            Mouse.OverrideCursor = null;
         }
 
         private bool IsColliding(FrameworkElement element1, FrameworkElement element2)
