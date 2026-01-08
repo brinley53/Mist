@@ -98,8 +98,8 @@ namespace Mist.ViewModel
         public RelayCommand SoundRiskCommand => new RelayCommand(execute => GenerateRisk(SoundLevel));
         public RelayCommand LightRiskCommand => new RelayCommand(execute => GenerateRisk(LightLevel));
         public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => AddressStress());
-        public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => TriggersVisibility = !TriggersVisibility);
-        public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => ActivitiesVisibility = !ActivitiesVisibility);
+        public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => { TriggersVisibility = !TriggersVisibility; ActivitiesVisibility = false; });
+        public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => { ActivitiesVisibility = !ActivitiesVisibility; TriggersVisibility = false; });
         public RelayCommand EditActivityCommand => new RelayCommand(EditActivity);
         public RelayCommand ViewTriggerCommand => new RelayCommand(ViewTrigger);
         
@@ -477,32 +477,34 @@ namespace Mist.ViewModel
             ActivitiesVisibility = false;
         }
 
-        private void BaseActivity()
+        private void BaseActivity(Activity a)
         {
+            SelectedActivity = a;
+            a.IsViewing = true;
             // commented out in case individual wants to do more than one thing
             //AddressStress(); 
         }
 
-        private void DeepBreathingActivity()
+        private void DeepBreathingActivity(Activity a)
         {
             DeepBreathingWindow deepBreathingWindow = new DeepBreathingWindow();
-            BaseActivity();
+            //BaseActivity(a);
             deepBreathingWindow.Show();
 
             // reference activity logic class
         }
 
-        private void MessageFriendActivity()
+        private void MessageFriendActivity(Activity a)
         {
             ContactFriendWindow contactFriendWindow = new ContactFriendWindow();
-            BaseActivity();
+            //BaseActivity(a);
             contactFriendWindow.Show();
         }
 
-        private void PlayActivity()
+        private void PlayActivity(Activity a)
         {
             PlayWindow playWindow = new PlayWindow();
-            BaseActivity();
+            //BaseActivity();
             playWindow.Show();
         }
 

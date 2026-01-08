@@ -21,8 +21,8 @@ namespace Mist.Model
             }
         }
 
-        private Action activityFunction;
-        public Action ActivityFunction
+        private Action<Activity> activityFunction;
+        public Action<Activity> ActivityFunction
         {
             get { return activityFunction; }
             set
@@ -76,20 +76,32 @@ namespace Mist.Model
             }
         }
 
+        private bool isViewing;
+        public bool IsViewing
+        {
+            get { return isViewing; }
+            set
+            {
+                isViewing = value;
+                OnPropertyChanged();
+            }
+        }
+
         public RelayCommand ActivityCommand
         {
             get
             {
-                return new RelayCommand(execute => ActivityFunction());
+                return new RelayCommand(execute => ActivityFunction(this));
             }
         }
 
-        public Activity(string name, Action? activity = null, bool canEdit = false, bool canDelete = false)
+        public Activity(string name, Action<Activity>? activity = null, bool canEdit = false, bool canDelete = false)
         {
             Name = name;
-            ActivityFunction = activity ?? (() => { });
+            ActivityFunction = activity ?? (_ => { });
             CanEdit = canEdit;
             IsEditing = false;
+            IsViewing = false;
             CanDelete = canDelete;
         }
     }

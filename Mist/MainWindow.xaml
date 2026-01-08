@@ -63,31 +63,43 @@
                 </StackPanel>
             </Grid>
             <Image Grid.Row="1" Height="400" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
-            <Grid Grid.Row="1" Margin="25" Background="LightPink" Visibility="{Binding TriggersVisibility, Converter={StaticResource BoolVisConverter}}">
-                <StackPanel>
-                    <TextBlock Text="These triggers may be bothering Rue:"/>
-                    <ItemsControl ItemsSource="{Binding Triggers}">
+            <Grid Grid.Row="1" Margin="35" Background="White" VerticalAlignment="Top" Visibility="{Binding TriggersVisibility, Converter={StaticResource BoolVisConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="Black" BorderThickness="3"/>
+                <StackPanel Margin="0,0,25,25">
+                    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Triggers" FontSize="18" FontWeight="Black"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="These triggers may be bothering Rue:"/>
+                    <ItemsControl ItemsSource="{Binding Triggers}" Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Command="{Binding DataContext.ViewTriggerCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}" Content="{Binding Name}" Visibility="{Binding Risk, Converter={StaticResource BoolVisConverter}, ConverterParameter='Collapse'}"/>
+                                <Button Command="{Binding DataContext.ViewTriggerCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=ItemsControl}}" CommandParameter="{Binding}" 
+                                        Content="{Binding Name}" Visibility="{Binding Risk, Converter={StaticResource BoolVisConverter}, ConverterParameter='Collapse'}"
+                                        Margin="5" HorizontalAlignment="Left"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
             </Grid>
-            
-            <Grid Grid.Row="1" Margin="25" Background="LightGreen" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
-                <StackPanel>
-                    <TextBlock Text="Rue wants you to do one of the following with her: "/>
-                    <ItemsControl ItemsSource="{Binding Activities}">
+
+            <Grid Grid.Row="1" Grid.RowSpan="2" Margin="35" Background="White" VerticalAlignment="Top" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="Black" BorderThickness="3"/>
+                <StackPanel Margin="0,0,25,25">
+                    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Activities" FontSize="18" FontWeight="Black"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="Rue wants you to do one of the following with her: "/>
+                    <ItemsControl ItemsSource="{Binding Activities}" Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding Name}" Command="{Binding ActivityCommand}"/>
+                                <Button Content="{Binding Name}" Command="{Binding ActivityCommand}" Margin="5" HorizontalAlignment="Left"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-            </Grid> 
+            </Grid>
             <!--
             <Grid Grid.Row="1" Margin="25" Background="LightBlue">
                 <StackPanel>
@@ -120,10 +132,14 @@
                 <!--<Button Content="Edit Activities" />-->
                 <!-- On Click, open panel to edit activities-->
             </StackPanel>
+            <uc:PopupUserControl IsViewing="{Binding SelectedActivity.IsViewing}" Title="{Binding SelectedActivity.Name}"
+                                 InnerText="Your pet thinks it could be calming to do this activity." Width="315" Grid.Row="1"/>
+            <uc:PopupUserControl Items="{Binding SelectedTrigger.Mitigations}" IsViewing="{Binding SelectedTrigger.IsViewing}" Title="{Binding SelectedTrigger.Name}"
+                                 InnerText="If this trigger is causing you or your pet distress, try one of these recommended actions:" Width="315" Grid.Row="1"/>
+            <!--<uc:TriggerUserControl TriggerData="{Binding SelectedTrigger}" Visibility="{Binding SelectedTrigger.IsViewing, Converter={StaticResource BoolVisConverter}}" Width="300" Grid.Row="1"/>
+-->
         </Grid>
 
-
-        <uc:TriggerUserControl TriggerData="{Binding SelectedTrigger}" Visibility="{Binding SelectedTrigger.IsViewing, Converter={StaticResource BoolVisConverter}}"/>
         <!--<uc:ActivityUserControl ActivityData="{Binding SelectedActivity}" Visibility="{Binding SelectedActivity.IsEditing, Converter={StaticResource BoolVisConverter}}"/>-->
         <Grid Name="DataControls" Grid.Row="1" Visibility="Collapsed">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
