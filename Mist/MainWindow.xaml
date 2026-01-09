@@ -172,15 +172,40 @@
             </StackPanel>
         </Grid>
         <Grid Name="StressEvents" Grid.Row="2">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
                         <Setter Property="Margin" Value="2"/>
                     </Style>
                 </StackPanel.Resources>
-                <Button Name="Stress1" Content="Toggle Heart" Command="{Binding Stress1Command}"/>
-                <Button Name="Stress2" Content="Toggle Res" Command="{Binding Stress2Command}"/>
-                <Button Name="Stress3" Content="Toggle Temp" Command="{Binding Stress3Command}"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    
+                    <Button Name="IncHR" Content="Increase Heart" Command="{Binding IncHRCommand}"/>
+                    <Button Name="IncSR" Content="Increase Res" Command="{Binding IncSRCommand}"/>
+                    <Button Name="IncBT" Content="Increase Temp" Command="{Binding IncBTCommand}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Margin" Value="2"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button Name="DecHR" Content="Decrease Heart" Command="{Binding DecHRCommand}"/>
+                    <Button Name="DecSR" Content="Decrease Res" Command="{Binding DecSRCommand}"/>
+                    <Button Name="DecBT" Content="Decrease Temp" Command="{Binding DecBTCommand}"/>
+                </StackPanel>
+            </StackPanel>
+     
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="2"/>
+                    </Style>
+                </StackPanel.Resources>
                 <Button Name="SoundRisk" Content="Toggle Sound Risk" Command="{Binding SoundRiskCommand}"/>
                 <Button Name="LightRisk" Content="Toggle Light Risk" Command="{Binding LightRiskCommand}"/>
             </StackPanel>

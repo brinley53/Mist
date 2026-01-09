@@ -82,12 +82,12 @@ namespace Mist.ViewModel
         }
 
         // button commands to increase/decrease data
-        public RelayCommand HeartIncCommand => new RelayCommand(execute => Heartrate.Increase(5));
-        public RelayCommand HeartDecCommand => new RelayCommand(execute => Heartrate.Decrease(5));
-        public RelayCommand ResIncCommand => new RelayCommand(execute => SkinResistance.Increase(5000));
-        public RelayCommand ResDecCommand => new RelayCommand(execute => SkinResistance.Decrease(5000));
-        public RelayCommand TempIncCommand => new RelayCommand(execute => BodyTemperature.Increase(0.1f));
-        public RelayCommand TempDecCommand => new RelayCommand(execute => BodyTemperature.Decrease(0.1f));
+        public RelayCommand IncHRCommand => new RelayCommand(execute => HRDirection++);
+        public RelayCommand DecHRCommand => new RelayCommand(execute => HRDirection--);
+        public RelayCommand IncSRCommand => new RelayCommand(execute => SRDirection++);
+        public RelayCommand DecSRCommand => new RelayCommand(execute => SRDirection--);
+        public RelayCommand IncBTCommand => new RelayCommand(execute => BTDirection++);
+        public RelayCommand DecBTCommand => new RelayCommand(execute => BTDirection--);
         public RelayCommand SoundIncCommand => new RelayCommand(execute => SoundLevel.Increase(10f));
         public RelayCommand SoundDecCommand => new RelayCommand(execute => SoundLevel.Decrease(10f));
         public RelayCommand LightIncCommand => new RelayCommand(execute => LightLevel.Increase(500f));
@@ -224,6 +224,40 @@ namespace Mist.ViewModel
             }
         }
 
+        // indicates which direction the biometrics change per second; 0 = steady, -1 = decrease, 1 = increase
+        private int hrDirection;
+        public int HRDirection
+        {
+            get { return hrDirection; }
+            set
+            {
+                hrDirection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int btDirection;
+        public int BTDirection
+        {
+            get { return btDirection; }
+            set
+            {
+                btDirection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int srDirection;
+        public int SRDirection
+        {
+            get { return srDirection; }
+            set
+            {
+                srDirection = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ObservableCollection<Model.Trigger> triggers;
         public ObservableCollection<Model.Trigger> Triggers
         {
@@ -327,6 +361,10 @@ namespace Mist.ViewModel
             };
 
             SelectedActivity = new Activity("Starter");
+
+            HRDirection = 0;
+            BTDirection = 0;
+            SRDirection = 0;
 
             rnd = new Random();
 
@@ -536,6 +574,12 @@ namespace Mist.ViewModel
             SelectedTrigger.IsViewing = true;
         }
 
+        private void changeBiometric(Biometric bio, float max, int dir)
+        {
+            float change = (float)rnd.NextDouble() * max;
+            bio.Value += change * dir;
+        }
+
         private void UpdateTimer_Second(object sender, EventArgs e)
         {
             // Check for change in pulse
@@ -567,23 +611,9 @@ namespace Mist.ViewModel
                 BTT = "Body Temp";
             }
 
-
-                // Calculate next heartrate value
-            //    int heartrateChange = rnd.Next(0, 4);
-            //if (Heartrate.Value < 60)
-            //{
-            //    Heartrate.Value += heartrateChange;
-            //}
-            //else if (Heartrate.Value > 200)
-            //{
-            //    Heartrate.Value -= heartrateChange;
-            //}
-            //else
-            //{
-            //    var signs = new[] { -1, 1 };
-            //    int sign = rnd.Next(2);
-            //    Heartrate.Value += signs[sign] * heartrateChange;
-            //}
+            changeBiometric(Heartrate, 5f, HRDirection);
+            changeBiometric(BodyTemperature, 0.05f, BTDirection);
+            changeBiometric(SkinResistance, 2500f, SRDirection);
 
             Heartrate.Values.Add(Heartrate.Value);
             BodyTemperature.Values.Add(BodyTemperature.Value);
