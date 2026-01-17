@@ -22,6 +22,13 @@ namespace Mist.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
 
+        private static float HEARTRATE_INIT = 71.5f; //bpm
+        private static float HEARTRATE_DUR = 30f; //seconds
+        private static float SKINRES_INIT = 50000f; //ohms
+        private static float SKINRES_DUR = 60f; //seconds
+        private static float BODYTEMP_INIT = 37f; //celsius
+        private static float BODYTEMP_DUR = 60f; //seconds
+
         Random rnd;
 
         private Biometric heartrate;
@@ -311,16 +318,19 @@ namespace Mist.ViewModel
         public MainWindowViewModel()
         {
             // Initialize Biometric data variables
-            Heartrate = new Biometric(75f, 30f, 1);
+            Heartrate = new Biometric(HEARTRATE_INIT, HEARTRATE_DUR, 1);
             Heartrate.DifferenceThreshold = Heartrate.Reference * 0.05f;
+            Heartrate.Values = Enumerable.Repeat(HEARTRATE_INIT, deltaT).ToList();
             heartrateEventTimer = 0;
 
-            SkinResistance = new Biometric(50000f, 60f, -1); // Value Lower Range: down to 1000 ohms (sweaty). Upper range: 100,000 ohms (dry)
+            SkinResistance = new Biometric(SKINRES_INIT, SKINRES_DUR, -1); // Value Lower Range: down to 1000 ohms (sweaty). Upper range: 100,000 ohms (dry)
             SkinResistance.DifferenceThreshold = SkinResistance.Reference * 0.10f;
+            SkinResistance.Values = Enumerable.Repeat(SKINRES_INIT, deltaT).ToList();
             resistanceEventTimer = 0;
 
-            BodyTemperature = new Biometric(37f, 60f, -1);
+            BodyTemperature = new Biometric(BODYTEMP_INIT, BODYTEMP_DUR, -1);
             BodyTemperature.DifferenceThreshold = 0.1f; //Degrees Celsius
+            BodyTemperature.Values = Enumerable.Repeat(BODYTEMP_INIT, deltaT).ToList();
             tempEventTimer = 0;
 
             SoundLevel = new Model.Trigger("Sound", 50f, 77.5f); // in decibels; sound levels that start overstimulation: 60-85 dB
@@ -399,11 +409,6 @@ namespace Mist.ViewModel
             } else
             {
                 // Reset Heartrate variables
-                if (eventOne || eventThree)
-                {
-                    Heartrate.Values = [Heartrate.Value];
-                }
-
                 heartrateEventTimer = 0;
                 HRT = "Heartrate";
             }
@@ -458,7 +463,6 @@ namespace Mist.ViewModel
             {
                 Heartrate.Reference = Heartrate.Values.Average();
                 Heartrate.DifferenceThreshold = Heartrate.Reference * 0.05f;
-                Heartrate.Values = [Heartrate.Value];
                 heartrateEventTimer = 0;
             }
 
@@ -466,14 +470,12 @@ namespace Mist.ViewModel
             {
                 SkinResistance.Reference = SkinResistance.Values.Average();
                 SkinResistance.DifferenceThreshold = SkinResistance.Reference * 0.1f;
-                SkinResistance.Values = [SkinResistance.Value];
                 resistanceEventTimer = 0;
             }
 
             if (BodyTemperature.LongtermCondition(tempEventTimer))
             {
                 BodyTemperature.Reference = BodyTemperature.Values.Average();
-                BodyTemperature.Values = [BodyTemperature.Value];
                 tempEventTimer = 0;
             }
 
@@ -504,7 +506,7 @@ namespace Mist.ViewModel
             {
                 FerretText += " Rue noticed it is very bright.";
             }
-                FerretImage = ferretFiles[stressLevel];
+            FerretImage = ferretFiles[stressLevel];
         }
 
         private void AddressStress(int duration=120)
@@ -615,6 +617,10 @@ namespace Mist.ViewModel
             changeBiometric(BodyTemperature, 0.05f, BTDirection);
             changeBiometric(SkinResistance, 2500f, SRDirection);
 
+            // update list for average biometric values
+            Heartrate.Values.RemoveAt(0);
+            BodyTemperature.Values.RemoveAt(0);
+            SkinResistance.Values.RemoveAt(0);
             Heartrate.Values.Add(Heartrate.Value);
             BodyTemperature.Values.Add(BodyTemperature.Value);
             SkinResistance.Values.Add(SkinResistance.Value);

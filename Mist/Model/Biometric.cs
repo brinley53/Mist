@@ -50,6 +50,7 @@ namespace Mist.Model
             }
         }
 
+        // the duration the condition has to be elevated to be considered normal again/reset reference value
         private float durationCondition;
         public float DurationCondition {
             get { return durationCondition; }
