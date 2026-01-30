@@ -24,10 +24,14 @@ namespace Mist.ViewModel
 
         private static float HEARTRATE_INIT = 71.5f; //bpm
         private static float HEARTRATE_DUR = 30f; //seconds
-        private static float SKINRES_INIT = 50000f; //ohms
+        private static float SKINRES_INIT = 50500f; //ohms
         private static float SKINRES_DUR = 60f; //seconds
-        private static float BODYTEMP_INIT = 37f; //celsius
+        private static float BODYTEMP_INIT = 36.26f; //celsius
         private static float BODYTEMP_DUR = 60f; //seconds
+        private static float SOUND_INIT = 50f; //decibels
+        private static float SOUND_THRESHOLD = 77.5f; //decibels
+        private static float LIGHT_INIT = 500f; //lux
+        private static float LIGHT_THRESHOLD = 1000f; //lux
 
         Random rnd;
 
@@ -185,7 +189,7 @@ namespace Mist.ViewModel
             }
         }
 
-        private List<String> prompts = new List<string> { "", "Rue is feeling uneasy.", "Rue is feeling tense.", "Rue is very stressed." };
+        private List<String> prompts = new List<string> { "Rue feels calm.", "Rue feels uneasy.", "Rue is stressed.", "Rue is very stressed." };
         private List<String> riskPrompts = new List<string> { "loud", "bright" };
         private string ferretText;
         public string FerretText
@@ -333,11 +337,11 @@ namespace Mist.ViewModel
             BodyTemperature.Values = Enumerable.Repeat(BODYTEMP_INIT, deltaT).ToList();
             tempEventTimer = 0;
 
-            SoundLevel = new Model.Trigger("Sound", 50f, 77.5f); // in decibels; sound levels that start overstimulation: 60-85 dB
+            SoundLevel = new Model.Trigger("Sound", SOUND_INIT, SOUND_THRESHOLD); // in decibels; sound levels that start overstimulation: 60-85 dB
             SoundLevel.Mitigations.Add("Find a safer space with less sound.");
             SoundLevel.Mitigations.Add("Turn down the sound.");
             SoundLevel.Mitigations.Add("Use headphones or earplugs.");
-            LightLevel = new Model.Trigger("Light", 500f, 1000f); // in Lux. assuming indoor lighting
+            LightLevel = new Model.Trigger("Light", LIGHT_INIT, LIGHT_THRESHOLD); // in Lux. assuming indoor lighting
             LightLevel.Mitigations.Add("Find a safer space with softer light.");
             LightLevel.Mitigations.Add("Turn down the light.");
 
