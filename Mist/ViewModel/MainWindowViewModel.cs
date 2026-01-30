@@ -592,7 +592,7 @@ namespace Mist.ViewModel
             if (Heartrate.StressCondition())
             {
                 heartrateEventTimer += 1;
-                HRT = "Heartrate Stress";
+                HRT = "Heartrate (stress)";
             } else
             {
                 HRT = "Heartrate";
@@ -602,7 +602,7 @@ namespace Mist.ViewModel
             if (SkinResistance.StressCondition())
             {
                 resistanceEventTimer += 1;
-                SRT = "Skin Resistance Stress";
+                SRT = "Skin Resistance (stress)";
             } else
             {
                 SRT = "Skin Resistance";
@@ -610,7 +610,7 @@ namespace Mist.ViewModel
 
             if (BodyTemperature.StressCondition())
             {
-                BTT = "Body Temp Stress";
+                BTT = "Body Temp (stress)";
                 tempEventTimer += 1;
             } else
             {

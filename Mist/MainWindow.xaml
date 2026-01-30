@@ -19,8 +19,8 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
@@ -115,10 +115,10 @@
                 </StackPanel>
             </Grid>-->
             <StackPanel Name="Data" Grid.Column="2" Grid.RowSpan="2">
-                <Label Content="{Binding SRT}"/>
-                <TextBlock x:Name="SkinResistanceTextBlock" Text="{Binding SkinResistance.Value}"/>
                 <Label Content="{Binding HRT}"/>
                 <TextBlock x:Name="HeartrateTextBlock" Text="{Binding Heartrate.Value}"/>
+                <Label Content="{Binding SRT}"/>
+                <TextBlock x:Name="SkinResistanceTextBlock" Text="{Binding SkinResistance.Value}"/>
                 <Label Content="{Binding BTT}"/>
                 <TextBlock x:Name="BodyTemperatureTextBlock" Text="{Binding BodyTemperature.Value}"/>
                 <Label Content="Stress Level"/>
