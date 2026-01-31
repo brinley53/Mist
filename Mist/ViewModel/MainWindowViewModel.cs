@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
 using System.Diagnostics.SymbolStore;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Net.Http.Headers;
@@ -16,17 +17,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Xml.Linq;
 
 namespace Mist.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
 
-        private static float HEARTRATE_INIT = 71.5f; //bpm
+        private float HEARTRATE_INIT; //bpm
         private static float HEARTRATE_DUR = 30f; //seconds
-        private static float SKINRES_INIT = 50500f; //ohms
+        private float SKINRES_INIT; //ohms
         private static float SKINRES_DUR = 60f; //seconds
-        private static float BODYTEMP_INIT = 36.26f; //celsius
+        private float BODYTEMP_INIT; //celsius
         private static float BODYTEMP_DUR = 60f; //seconds
         private static float SOUND_INIT = 50f; //decibels
         private static float SOUND_THRESHOLD = 77.5f; //decibels
@@ -319,8 +321,13 @@ namespace Mist.ViewModel
 
         int deltaT = 10;
 
+        private string userFilePath = Path.Combine(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")), "UserData", "Biometrics.xml");
+
         public MainWindowViewModel()
         {
+            //get reference values from user data
+            LoadUserData();
+
             // Initialize Biometric data variables
             Heartrate = new Biometric(HEARTRATE_INIT, HEARTRATE_DUR, 1);
             Heartrate.DifferenceThreshold = Heartrate.Reference * 0.05f;
@@ -392,6 +399,45 @@ namespace Mist.ViewModel
             delta_t_timer.Tick += new EventHandler(UpdateTimer_DeltaT);
             delta_t_timer.Interval = new TimeSpan(0, 0, deltaT); // hours, minutes, seconds
             delta_t_timer.Start();
+        }
+
+        public void LoadUserData()
+        {
+            //var uri = new Uri("pack://application:,,,/UserData/Biometrics.xml");
+
+            //using var stream = Application.GetResourceStream(uri)!.Stream;
+            var doc = XDocument.Load(userFilePath);
+
+            HEARTRATE_INIT =
+                float.Parse(
+                    doc.Root
+                        .Element("heartrate")
+                        .Value);
+
+            SKINRES_INIT =
+                float.Parse(
+                    doc.Root
+                        .Element("skinresistance")
+                        .Value);
+
+            BODYTEMP_INIT =
+                float.Parse(
+                    doc.Root
+                        .Element("bodytemperature")
+                        .Value);
+        }
+
+        public void SaveUserData()
+        {
+            var doc = new XDocument(
+                new XElement("biometrics",
+                    new XElement("heartrate", Heartrate.Reference),
+                    new XElement("skinresistance", SkinResistance.Reference),
+                    new XElement("bodytemperature", BodyTemperature.Reference)
+                )
+            );
+
+            doc.Save(userFilePath);
         }
 
         private void UpdateTimer_DeltaT(object sender, EventArgs e)
@@ -467,6 +513,7 @@ namespace Mist.ViewModel
             {
                 Heartrate.Reference = Heartrate.Values.Average();
                 Heartrate.DifferenceThreshold = Heartrate.Reference * 0.05f;
+                HRT = "HELLO";
                 heartrateEventTimer = 0;
             }
 

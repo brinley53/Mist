@@ -1,4 +1,5 @@
 ﻿using Mist.ViewModel;
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,5 +25,11 @@ public partial class MainWindow : Window
         InitializeComponent();
         MainWindowViewModel vm = new MainWindowViewModel();
         DataContext = vm;
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        (DataContext as MainWindowViewModel)?.SaveUserData();
+        base.OnClosing(e);
     }
 }

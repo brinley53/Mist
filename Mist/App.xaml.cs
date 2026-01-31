@@ -1,6 +1,8 @@
-﻿using System.Configuration;
+﻿using Mist.ViewModel;
+using System.Configuration;
 using System.Data;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace Mist;
 
@@ -9,5 +11,6 @@ namespace Mist;
 /// </summary>
 public partial class App : Application
 {
+
 }
 

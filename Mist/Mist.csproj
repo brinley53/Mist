@@ -18,6 +18,7 @@
     <None Remove="images\holdbreath2.png" />
     <None Remove="images\inhale.png" />
     <None Remove="images\treat.png" />
+    <None Remove="UserData\biometrics.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,9 @@
     <Resource Include="images\holdbreath2.png" />
     <Resource Include="images\inhale.png" />
     <Resource Include="images\treat.png" />
+    <Resource Include="UserData\Biometrics.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
