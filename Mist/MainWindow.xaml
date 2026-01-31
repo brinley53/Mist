@@ -17,6 +17,8 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
+        <Image Grid.RowSpan="4" Source="/images/room.png"/>
+        <Image Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="275" VerticalAlignment="Bottom" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}" Margin="35,0,0,35"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
@@ -27,13 +29,13 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid Name="StressOptions" Margin="0,30,0,0" Height="150" VerticalAlignment="Top">
+            <Grid Name="StressOptions" Margin="0,30,0,0" Height="150" VerticalAlignment="Bottom">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="5*"/>
-                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="5*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding FerretText}" Width="200" Height="50"  Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}"/>
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="{Binding StressTextVisibility, Converter={StaticResource BoolVisConverter}}">
+                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding FerretText}" Width="200" Height="50" FontSize="12" FontWeight="DemiBold"/>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding StressVisibility, Converter={StaticResource BoolVisConverter}}">
                     <StackPanel.Resources>
                         <Style TargetType="Button">
                             <Setter Property="Margin" Value="10,0,10,10"/>
@@ -41,7 +43,7 @@
                             <Setter Property="Height" Value="40"/>
                         </Style>
                     </StackPanel.Resources>
-                    <Button Name="Ignore" Command="{Binding ToggleStressTextVisibility}">
+                    <Button Name="Ignore" Command="{Binding ToggleStressVisibility}">
                         <TextBlock Text="Tell Rue it's okay." 
                                    TextWrapping="Wrap" 
                                    TextAlignment="Center"
@@ -62,8 +64,7 @@
                     </Button>
                 </StackPanel>
             </Grid>
-            <Image Grid.Row="1" Height="400" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
-            <Grid Grid.Row="1" Margin="35" Background="White" VerticalAlignment="Top" Visibility="{Binding TriggersVisibility, Converter={StaticResource BoolVisConverter}}">
+            <Grid Grid.Row="1" Margin="35" Background="WhiteSmoke" VerticalAlignment="Top" Visibility="{Binding TriggersVisibility, Converter={StaticResource BoolVisConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -83,7 +84,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1" Grid.RowSpan="2" Margin="35" Background="White" VerticalAlignment="Top" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
+            <Grid Grid.Row="1" Grid.RowSpan="2" Margin="35" Background="WhiteSmoke" VerticalAlignment="Top" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -114,24 +115,32 @@
                     <Button Content="Add New"/>
                 </StackPanel>
             </Grid>-->
-            <StackPanel Name="Data" Grid.Column="2" Grid.RowSpan="2">
-                <Label Content="{Binding HRT}"/>
-                <TextBlock x:Name="HeartrateTextBlock" Text="{Binding Heartrate.Value}"/>
-                <Label Content="{Binding SRT}"/>
-                <TextBlock x:Name="SkinResistanceTextBlock" Text="{Binding SkinResistance.Value}"/>
-                <Label Content="{Binding BTT}"/>
-                <TextBlock x:Name="BodyTemperatureTextBlock" Text="{Binding BodyTemperature.Value}"/>
-                <Label Content="Stress Level"/>
-                <TextBlock x:Name="StressLevel" Text="{Binding StressLevel}"/>
-                <Label Content="Sound"/>
-                <TextBlock x:Name="SoundTextBlock" Text="{Binding SoundLevel.Value}"/>
-                <Label Content="Light"/>
-                <TextBlock x:Name="LightTextBlock" Text="{Binding LightLevel.Value}"/>
-                <Label Content="Risk Level"/>
-                <TextBlock x:Name="RiskLevel" Text="{Binding RiskLevel}"/>
-                <!--<Button Content="Edit Activities" />-->
-                <!-- On Click, open panel to edit activities-->
-            </StackPanel>
+            <Grid Name="Data" Grid.Column="2" Grid.RowSpan="2" Background="WhiteSmoke" Height="375" VerticalAlignment="Top">
+                <Border BorderBrush="Black" BorderThickness="3"/>
+                <StackPanel Margin="8">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="0,0,0,8"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Label Content="{Binding HRT}"/>
+                    <TextBlock x:Name="HeartrateTextBlock" Text="{Binding Heartrate.Value}"/>
+                    <Label Content="{Binding SRT}"/>
+                    <TextBlock x:Name="SkinResistanceTextBlock" Text="{Binding SkinResistance.Value}"/>
+                    <Label Content="{Binding BTT}"/>
+                    <TextBlock x:Name="BodyTemperatureTextBlock" Text="{Binding BodyTemperature.Value}"/>
+                    <Label Content="Stress Level"/>
+                    <TextBlock x:Name="StressLevel" Text="{Binding StressLevel}"/>
+                    <Label Content="Sound"/>
+                    <TextBlock x:Name="SoundTextBlock" Text="{Binding SoundLevel.Value}"/>
+                    <Label Content="Light"/>
+                    <TextBlock x:Name="LightTextBlock" Text="{Binding LightLevel.Value}"/>
+                    <Label Content="Risk Level"/>
+                    <TextBlock x:Name="RiskLevel" Text="{Binding RiskLevel}"/>
+                    <!--<Button Content="Edit Activities" />-->
+                    <!-- On Click, open panel to edit activities-->
+                </StackPanel>
+            </Grid>
             <uc:PopupUserControl IsViewing="{Binding SelectedActivity.IsViewing}" Title="{Binding SelectedActivity.Name}"
                                  InnerText="Your pet thinks it could be calming to do this activity." Width="315" Grid.Row="1"/>
             <uc:PopupUserControl Items="{Binding SelectedTrigger.Mitigations}" IsViewing="{Binding SelectedTrigger.IsViewing}" Title="{Binding SelectedTrigger.Name}"
@@ -141,41 +150,12 @@
         </Grid>
 
         <!--<uc:ActivityUserControl ActivityData="{Binding SelectedActivity}" Visibility="{Binding SelectedActivity.IsEditing, Converter={StaticResource BoolVisConverter}}"/>-->
-        <Grid Name="DataControls" Grid.Row="1" Visibility="Collapsed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel.Resources>
-                    <Style TargetType="Button">
-                        <Setter Property="Margin" Value="2"/>
-                    </Style>
-                </StackPanel.Resources>
-                <StackPanel>
-                    <Button Name="HeartInc" Content="Heartrate +" Command="{Binding HeartIncCommand}"/>
-                    <Button Name="HeartDec" Content="Heartrate -" Command="{Binding HeartDecCommand}"/>
-                </StackPanel>
-                <StackPanel>
-                    <Button Name="ResInc" Content="Resistance +" Command="{Binding ResIncCommand}"/>
-                    <Button Name="ResDec" Content="Resistance -" Command="{Binding ResDecCommand}"/>
-                </StackPanel>
-                <StackPanel>
-                    <Button Name="TempInc" Content="Temp +" Command="{Binding TempIncCommand}"/>
-                    <Button Name="TempDec" Content="Temp -" Command="{Binding TempDecCommand}"/>
-                </StackPanel>
-                <StackPanel>
-                    <Button Name="SoundInc" Content="Sound +" Command="{Binding SoundIncCommand}"/>
-                    <Button Name="SoundDec" Content="Sound -" Command="{Binding SoundDecCommand}"/>
-                </StackPanel>
-                <StackPanel>
-                    <Button Name="LightInc" Content="Light +" Command="{Binding LightIncCommand}"/>
-                    <Button Name="LightDec" Content="Light -" Command="{Binding LightDecCommand}"/>
-                </StackPanel>
-               
-            </StackPanel>
-        </Grid>
-        <Grid Name="StressEvents" Grid.Row="2">
+        <Grid Name="StressEvents" Grid.Row="3" Background="WhiteSmoke">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
+            <Border BorderBrush="Black" BorderThickness="3" Grid.ColumnSpan="2"/>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
@@ -183,7 +163,7 @@
                     </Style>
                 </StackPanel.Resources>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    
+
                     <Button Name="IncHR" Content="Increase Heart" Command="{Binding IncHRCommand}"/>
                     <Button Name="IncSR" Content="Increase Res" Command="{Binding IncSRCommand}"/>
                     <Button Name="IncBT" Content="Increase Temp" Command="{Binding IncBTCommand}"/>
@@ -199,7 +179,7 @@
                     <Button Name="DecBT" Content="Decrease Temp" Command="{Binding DecBTCommand}"/>
                 </StackPanel>
             </StackPanel>
-     
+
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
                 <StackPanel.Resources>
                     <Style TargetType="Button">

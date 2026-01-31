@@ -110,7 +110,7 @@ namespace Mist.ViewModel
         public RelayCommand Stress3Command => new RelayCommand(execute => GenerateStressEvent(BodyTemperature));
         public RelayCommand SoundRiskCommand => new RelayCommand(execute => GenerateRisk(SoundLevel));
         public RelayCommand LightRiskCommand => new RelayCommand(execute => GenerateRisk(LightLevel));
-        public RelayCommand ToggleStressTextVisibility => new RelayCommand(execute => AddressStress());
+        public RelayCommand ToggleStressVisibility => new RelayCommand(execute => AddressStress());
         public RelayCommand ToggleTriggersVisibility => new RelayCommand(execute => { TriggersVisibility = !TriggersVisibility; ActivitiesVisibility = false; });
         public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => { ActivitiesVisibility = !ActivitiesVisibility; TriggersVisibility = false; });
         public RelayCommand EditActivityCommand => new RelayCommand(EditActivity);
@@ -134,13 +134,13 @@ namespace Mist.ViewModel
         }
 
         private int stressAddressedTimer = 0;
-        private bool stressTextVisibility;
-        public bool StressTextVisibility
+        private bool stressVisibility;
+        public bool StressVisibility
         {
-            get { return stressTextVisibility; }
+            get { return stressVisibility; }
             set
             {
-                stressTextVisibility = value;
+                stressVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -363,6 +363,7 @@ namespace Mist.ViewModel
             eventThree = false;
             stressLevel = 0; // 0 is baseline, no stress; 
             ferretImage = ferretFiles[0];
+            ferretText = prompts[0];
 
             Triggers = new ObservableCollection<Model.Trigger>() 
             {
@@ -473,7 +474,7 @@ namespace Mist.ViewModel
                 }
             } else
             {
-                SRT = "Skin Resistance";
+                SRT = "Skin Res";
                 // Reset Skin Resistance variables
                 if (eventTwo)
                 {
@@ -537,8 +538,8 @@ namespace Mist.ViewModel
                 stressAddressedTimer -= 1;
                 return;
             }
-            StressTextVisibility = StressLevel > 0 || RiskLevel > 0;
-            if (StressTextVisibility == false)
+            StressVisibility = StressLevel > 0 || RiskLevel > 0;
+            if (StressVisibility == false)
             {
                 TriggersVisibility = false;
                 ActivitiesVisibility = false;
@@ -562,7 +563,7 @@ namespace Mist.ViewModel
 
         private void AddressStress(int duration=120)
         {
-            StressTextVisibility = false;
+            StressVisibility = false;
             stressAddressedTimer = duration; // duration in seconds
             TriggersVisibility = false;
             ActivitiesVisibility = false;
@@ -649,10 +650,10 @@ namespace Mist.ViewModel
             if (SkinResistance.StressCondition())
             {
                 resistanceEventTimer += 1;
-                SRT = "Skin Resistance (stress)";
+                SRT = "Skin Res (stress)";
             } else
             {
-                SRT = "Skin Resistance";
+                SRT = "Skin Res";
             }
 
             if (BodyTemperature.StressCondition())
