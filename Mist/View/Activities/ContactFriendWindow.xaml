@@ -8,15 +8,16 @@
         mc:Ignorable="d"
         Title="ContactFriendWindow" Height="800" Width="480">
     <Grid>
-        <ScrollViewer>
+        <Image Source="/images/journal.png"/>
+        <ScrollViewer Margin="60,0,0,0">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Help Rue write a message to someone close." TextAlignment="Center" FontSize="20" Margin="25"/>
+                <TextBlock Text="Help Rue write a message to someone close." TextWrapping="Wrap" TextAlignment="Center" FontWeight="DemiBold" FontSize="25" Margin="25"/>
                 <uc:FormUserControl x:Name="People" Title="Dear" Text="{Binding People, Mode=TwoWay}" Prompts="{Binding PeoplePrompts}"/>
                 <uc:FormUserControl x:Name="Feeling" Title="I feel" Text="{Binding Feeling, Mode=TwoWay}" Prompts="{Binding FeelingPrompts}"/>
                 <uc:FormUserControl x:Name="Reason" Title="because of" Text="{Binding Reason, Mode=TwoWay}" Prompts="{Binding ReasonPrompts}"/>
                 <uc:FormUserControl x:Name="Action" Title="I need" Text="{Binding Action, Mode=TwoWay}" Prompts="{Binding ActionPrompts}"/>
                 <TextBlock Text="Here is the message you created:" TextAlignment="Center" FontSize="20" Margin="20"/>
-                <TextBox Text="{Binding Message}" Height="75" Margin="10" TextWrapping="Wrap"/>
+                <TextBox Text="{Binding Message}" Height="100" Width="350" Margin="10" TextWrapping="Wrap"/>
                 <Image Source="/images/ferret_play_0.png"/>
                 <Button Name="Exit" Content="Exit" Height="50" Width="75" Click="CloseButton_Click" Margin="0, 0, 0, 50"/>
             </StackPanel>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Mist.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White" Visibility="Visible">
+    <Grid Visibility="Visible">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="8*"/>

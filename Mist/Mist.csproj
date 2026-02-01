@@ -17,8 +17,10 @@
     <None Remove="images\holdbreath1.png" />
     <None Remove="images\holdbreath2.png" />
     <None Remove="images\inhale.png" />
+    <None Remove="images\journal.png" />
     <None Remove="images\room.png" />
     <None Remove="images\treat.png" />
+    <None Remove="images\wind_room.png" />
     <None Remove="UserData\biometrics.xml" />
   </ItemGroup>
 
@@ -36,8 +38,10 @@
     <Resource Include="images\holdbreath1.png" />
     <Resource Include="images\holdbreath2.png" />
     <Resource Include="images\inhale.png" />
+    <Resource Include="images\journal.png" />
     <Resource Include="images\room.png" />
     <Resource Include="images\treat.png" />
+    <Resource Include="images\wind_room.png" />
     <Resource Include="UserData\Biometrics.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

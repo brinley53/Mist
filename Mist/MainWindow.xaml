@@ -18,7 +18,8 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Image Grid.RowSpan="4" Source="/images/room.png"/>
-        <Image Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="275" VerticalAlignment="Bottom" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}" Margin="35,0,0,35"/>
+
+        <Image Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="350" VerticalAlignment="Bottom" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}" Margin="5,0,0,35"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
@@ -34,7 +35,7 @@
                     <RowDefinition Height="5*"/>
                     <RowDefinition Height="5*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding FerretText}" Width="200" Height="50" FontSize="12" FontWeight="DemiBold"/>
+                <TextBlock Name="FerretText" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding FerretText}" Width="200" Height="50" FontSize="12" FontWeight="DemiBold"/>
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding StressVisibility, Converter={StaticResource BoolVisConverter}}">
                     <StackPanel.Resources>
                         <Style TargetType="Button">
