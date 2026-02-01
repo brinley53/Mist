@@ -457,7 +457,7 @@ namespace Mist.ViewModel
                 {
                     eventThree = true;
                 }
-            } else
+            } else if (!Heartrate.Abnormal())
             {
                 // Reset Heartrate variables
                 heartrateEventTimer = 0;
@@ -472,7 +472,7 @@ namespace Mist.ViewModel
                 {
                     eventTwo = true;
                 }
-            } else
+            } else if (!SkinResistance.Abnormal())
             {
                 SRT = "Skin Res";
                 // Reset Skin Resistance variables
@@ -484,7 +484,7 @@ namespace Mist.ViewModel
             }
 
             // Reset/set temperature variables as needed
-            if (!BodyTemperature.StressCondition())
+            if (!BodyTemperature.Abnormal())
             {
                 BTT = "Body Temp";
                 tempEventTimer = 0;
@@ -514,7 +514,6 @@ namespace Mist.ViewModel
             {
                 Heartrate.Reference = Heartrate.Values.Average();
                 Heartrate.DifferenceThreshold = Heartrate.Reference * 0.05f;
-                HRT = "HELLO";
                 heartrateEventTimer = 0;
             }
 
@@ -637,28 +636,28 @@ namespace Mist.ViewModel
         private void UpdateTimer_Second(object sender, EventArgs e)
         {
             // Check for change in pulse
-            if (Heartrate.StressCondition())
+            if (Heartrate.Abnormal())
             {
                 heartrateEventTimer += 1;
-                HRT = "Heartrate (stress)";
+                HRT = "Heartrate (abnormal)";
             } else
             {
                 HRT = "Heartrate";
             }
 
             // Check for change in resistance
-            if (SkinResistance.StressCondition())
+            if (SkinResistance.Abnormal())
             {
                 resistanceEventTimer += 1;
-                SRT = "Skin Res (stress)";
+                SRT = "Skin Res (abnormal)";
             } else
             {
                 SRT = "Skin Res";
             }
 
-            if (BodyTemperature.StressCondition())
+            if (BodyTemperature.Abnormal())
             {
-                BTT = "Body Temp (stress)";
+                BTT = "Body Temp (abnormal)";
                 tempEventTimer += 1;
             } else
             {

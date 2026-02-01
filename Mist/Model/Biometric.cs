@@ -73,6 +73,11 @@ namespace Mist.Model
             }
         }
 
+        public bool Abnormal()
+        {
+            return Math.Abs(Values.Average() - Reference) > DifferenceThreshold;
+        }
+
         public bool StressCondition()
         {
             return StressIndicationDirection * (Values.Average() - Reference) > DifferenceThreshold;
@@ -80,7 +85,7 @@ namespace Mist.Model
 
         public bool LongtermCondition(float timeElapsed)
         {
-            return Math.Abs(Value - Reference) > DifferenceThreshold && timeElapsed > DurationCondition;
+            return Math.Abs(Values.Average() - Reference) > DifferenceThreshold && timeElapsed > DurationCondition;
         }
 
         public void Increase(float amount)
