@@ -17,7 +17,7 @@
         <Grid Background="WhiteSmoke" Margin="102,217,102,392">
             <Border BorderBrush="Black" BorderThickness="3"/>
             <TextBlock Name="Instruction" Text="{Binding Instruction}" Height="50" Width="100" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0" TextAlignment="Center"/>
-            <TextBlock Name="Time" Text="{Binding Time}" VerticalAlignment="Top" HorizontalAlignment="Center" Height="15" Width="16" Margin="0,55,0,0" TextAlignment="Center"/>
+            <TextBlock Name="Time" Text="{Binding Time}" VerticalAlignment="Top" HorizontalAlignment="Center" Height="15" Width="16" Margin="0,55,0,0" TextAlignment="Center" Visibility="{Binding IsExerciseOngoing, Converter={StaticResource BoolVisConverter}}"/>
             <Button Name="Continue" Content="{Binding ContinueButtonText}" Height="50" Width="76" VerticalAlignment="Bottom" HorizontalAlignment="Left" Command="{Binding ContinueCommand}" Visibility="{Binding IsExerciseComplete, Converter={StaticResource BoolVisConverter}}" Margin="40,0,0,25" />
             <Button Name="Exit" Content="Exit" Height="50" Width="76" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="CloseButton_Click" Visibility="{Binding IsExerciseComplete, Converter={StaticResource BoolVisConverter}}" Margin="0,0,40,25" />
         </Grid>

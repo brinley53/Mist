@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <Image Grid.RowSpan="4" Source="/images/room.png"/>
 
-        <Image Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="350" VerticalAlignment="Bottom" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}" Margin="5,0,0,35"/>
+        <Image Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="315" VerticalAlignment="Bottom" Source="{Binding Path=FerretImage, Converter={StaticResource ImageSourceConverter}}" Margin="15,0,0,35"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
@@ -45,20 +45,20 @@
                         </Style>
                     </StackPanel.Resources>
                     <Button Name="Ignore" Command="{Binding ToggleStressVisibility}">
-                        <TextBlock Text="Tell Rue it's okay." 
+                        <TextBlock Text="Tell Mist it's okay." 
                                    TextWrapping="Wrap" 
                                    TextAlignment="Center"
                                    FontSize="10"
                                    Width="40"/>
                     </Button>
                     <Button Name="ListTriggers" Command="{Binding ToggleTriggersVisibility}">
-                        <TextBlock Text="Manage Rue's triggers." 
+                        <TextBlock Text="Manage Mist's triggers." 
                                    TextWrapping="Wrap" 
                                    TextAlignment="Center"
                                    FontSize="10"/>
                     </Button>
                     <Button Name="Activities" Command="{Binding ToggleActivitiesVisibility}">
-                        <TextBlock Text="Give Rue attention." 
+                        <TextBlock Text="Give Mist attention." 
                                    TextWrapping="Wrap" 
                                    TextAlignment="Center"
                                    FontSize="10"/>
@@ -72,7 +72,7 @@
                 <Border BorderBrush="Black" BorderThickness="3"/>
                 <StackPanel Margin="0,0,25,25">
                     <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Triggers" FontSize="18" FontWeight="Black"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="These triggers may be bothering Rue:"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="These triggers may be bothering Mist:"/>
                     <ItemsControl ItemsSource="{Binding Triggers}" Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -85,23 +85,56 @@
                 </StackPanel>
             </Grid>
 
+            <Grid Grid.Row="1" Grid.RowSpan="3" Margin="35" Background="WhiteSmoke" VerticalAlignment="Top" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="325"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="Black" BorderThickness="3"/>
+                <ScrollViewer Margin="25">
+                    <StackPanel Margin="0,0,25,25">
+                        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Activities" FontSize="18" FontWeight="Black"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="Mist wants you to do one of the following with her: "/>
+                        <ItemsControl ItemsSource="{Binding Activities}" Margin="10,0,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Name}" Command="{Binding ActivityCommand}" Margin="5" HorizontalAlignment="Left"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+                <Button x:Name="AddActivity" Content="+" FontWeight="Bold" HorizontalAlignment="Right" VerticalContentAlignment="Top" FontSize="14" VerticalAlignment="Bottom" Margin="20" Width="25" Height="25" Command="{Binding ToggleAddActivity}"/>
+            </Grid>
+
+            <!--
             <Grid Grid.Row="1" Grid.RowSpan="2" Margin="35" Background="WhiteSmoke" VerticalAlignment="Top" Visibility="{Binding ActivitiesVisibility, Converter={StaticResource BoolVisConverter}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Border BorderBrush="Black" BorderThickness="3"/>
+                <Border BorderBrush="Black" BorderThickness="5"/>
+                <Grid Margin="20">
+                    <StackPanel Margin="0,0,35,0">
+                        <TextBlock HorizontalAlignment="Left" Margin="5" FontSize="15" FontWeight="Black" TextWrapping="Wrap" Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}}" VerticalAlignment="Top" />
+                        <StackPanel Margin="5">
+                            <TextBlock TextWrapping="Wrap" Text="{Binding InnerText, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="0,0,5,10"/>
+                            <ItemsControl ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Button Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Click="Close_Click"/>
+                </Grid>
                 <StackPanel Margin="0,0,25,25">
                     <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" Text="Activities" FontSize="18" FontWeight="Black"/>
-                    <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="Rue wants you to do one of the following with her: "/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="Mist wants you to do one of the following with her: "/>
                     <ItemsControl ItemsSource="{Binding Activities}" Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding Name}" Command="{Binding ActivityCommand}" Margin="5" HorizontalAlignment="Left"/>
+                                <TextBlock></TextBlock>
+                                <Button Content="Delete" Command="{Binding DeleteActivityCommand}" Margin="5" HorizontalAlignment="Right"/>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-            </Grid>
+            </Grid> -->
             <!--
             <Grid Grid.Row="1" Margin="25" Background="LightBlue">
                 <StackPanel>
@@ -143,9 +176,28 @@
                 </StackPanel>
             </Grid>
             <uc:PopupUserControl IsViewing="{Binding SelectedActivity.IsViewing}" Title="{Binding SelectedActivity.Name}"
-                                 InnerText="Your pet thinks it could be calming to do this activity." Width="315" Grid.Row="1"/>
+                                 InnerText="Your pet thinks it could be calming to do this activity." Width="300" Grid.Row="1"
+                                 Command="{Binding DeleteActivityCommand}" ButtonContent="Delete"/>
+            <!--<Grid x:Name="AddActivityPopup" Background="WhiteSmoke" VerticalAlignment="Center" Grid.Row="1" Width="250" Visibility="Collapsed">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border BorderBrush="Black" BorderThickness="5"/>
+                <Grid Margin="20">
+                    <StackPanel Margin="0,0,35,0">
+                        <TextBlock HorizontalAlignment="Left" Margin="5" FontSize="15" FontWeight="Black" TextWrapping="Wrap" Text="Add Activity" VerticalAlignment="Top"/>
+                        <TextBlock HorizontalAlignment="Left" Margin="5" FontSize="10" TextWrapping="Wrap" Text="Recommend an activity to Mist to help her calm down." VerticalAlignment="Top"/>
+                        <TextBox x:Name="NewActivityName" Margin="15" Height="25"/>
+                    </StackPanel>
+                    <Button x:Name="AddActivityButton" Content="Save" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="SaveActivity_Click"/>
+                    <Button Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Click="AddActivityClose_Click"/>
+                </Grid>
+            </Grid>-->
+            <uc:PopupUserControl x:Name="AddActivityPopup" IsViewing="{Binding AddActivityIsViewing}" Title="Add Activity"
+                                 InnerText="Recommend an activity to Mist to help her calm down." Width="300" Grid.Row="1"
+                                 ButtonContent="Save" Command="{Binding AddActivityCommand}" NewActivityName="{Binding NewActivityName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Textbox="True"/>
             <uc:PopupUserControl Items="{Binding SelectedTrigger.Mitigations}" IsViewing="{Binding SelectedTrigger.IsViewing}" Title="{Binding SelectedTrigger.Name}"
-                                 InnerText="If this trigger is causing you or your pet distress, try one of these recommended actions:" Width="315" Grid.Row="1"/>
+                                 InnerText="If this trigger is causing you or your pet distress, try one of these recommended actions:" Width="300" Margin="14,209,14,104" Grid.RowSpan="3"/>
             <!--<uc:TriggerUserControl TriggerData="{Binding SelectedTrigger}" Visibility="{Binding SelectedTrigger.IsViewing, Converter={StaticResource BoolVisConverter}}" Width="300" Grid.Row="1"/>
 -->
         </Grid>

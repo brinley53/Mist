@@ -20,10 +20,12 @@ namespace Mist;
 
 public partial class MainWindow : Window
 {
+    MainWindowViewModel vm;
+
     public MainWindow()
     {
         InitializeComponent();
-        MainWindowViewModel vm = new MainWindowViewModel();
+        vm = new MainWindowViewModel();
         DataContext = vm;
     }
 

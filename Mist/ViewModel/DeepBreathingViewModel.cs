@@ -50,6 +50,16 @@ namespace Mist.ViewModel
             set
             {
                 isExerciseComplete = value;
+                IsExerciseOngoing = !value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsExerciseOngoing
+        {
+            get { return !isExerciseComplete; }
+            set
+            {
                 OnPropertyChanged();
             }
         }

@@ -115,6 +115,10 @@ namespace Mist.ViewModel
         public RelayCommand ToggleActivitiesVisibility => new RelayCommand(execute => { ActivitiesVisibility = !ActivitiesVisibility; TriggersVisibility = false; });
         public RelayCommand EditActivityCommand => new RelayCommand(EditActivity);
         public RelayCommand ViewTriggerCommand => new RelayCommand(ViewTrigger);
+
+        public RelayCommand DeleteActivityCommand => new RelayCommand(execute => DeleteActivity());
+        public RelayCommand AddActivityCommand => new RelayCommand(AddActivity);
+        public RelayCommand ToggleAddActivity => new RelayCommand(execute => { AddActivityIsViewing = !AddActivityIsViewing; NewActivityName = ""; });
         
         // Stress event variables
         // Via Tomczak et. al
@@ -191,7 +195,7 @@ namespace Mist.ViewModel
             }
         }
 
-        private List<String> prompts = new List<string> { "Rue feels calm.", "Rue feels uneasy.", "Rue is stressed.", "Rue is very stressed." };
+        private List<String> prompts = new List<string> { "Mist feels calm.", "Mist feels slightly stressed.", "Mist feels stressed.", "Mist feels very stressed." };
         private List<String> riskPrompts = new List<string> { "loud", "bright" };
         private string ferretText;
         public string FerretText
@@ -304,6 +308,26 @@ namespace Mist.ViewModel
             }
         }
 
+        private bool addActivityIsViewing;
+        public bool AddActivityIsViewing
+        {
+            get { return addActivityIsViewing; }
+            set { 
+                addActivityIsViewing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string newActivityName = "";
+        public string NewActivityName
+        {
+            get { return newActivityName; }
+            set { 
+                newActivityName = value;
+                OnPropertyChanged();
+            }
+        }
+
         private Model.Trigger selectedTrigger;
         public Model.Trigger SelectedTrigger
         {
@@ -321,10 +345,18 @@ namespace Mist.ViewModel
 
         int deltaT = 10;
 
-        private string userFilePath = Path.Combine(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")), "UserData", "Biometrics.xml");
+        private string biometricFilePath = Path.Combine(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")), "UserData", "Biometrics.xml");
+        private string activitiesFilePath = Path.Combine(Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")), "UserData", "Activities.xml");
 
         public MainWindowViewModel()
         {
+            Activities = new ObservableCollection<Activity>()
+            {
+                new Activity("Play with Mist", PlayActivity),
+                new Activity("Deep Breathing", DeepBreathingActivity),
+                new Activity("Contact a Friend", MessageFriendActivity)
+            };
+
             //get reference values from user data
             LoadUserData();
 
@@ -354,6 +386,8 @@ namespace Mist.ViewModel
 
             SelectedTrigger = SoundLevel;
 
+            AddActivityIsViewing = false;
+
             HRT = "Heartrate";
             SRT = "Skin Resistance";
             BTT = "Body Temp";
@@ -369,17 +403,6 @@ namespace Mist.ViewModel
             {
                 SoundLevel,
                 LightLevel
-            };
-
-            Activities = new ObservableCollection<Activity>()
-            {
-                new Activity("Play with Rue", PlayActivity),
-                new Activity("Deep Breathing", DeepBreathingActivity),
-                new Activity("Contact a Friend", MessageFriendActivity),
-                new Activity("Use Fidget Toys", BaseActivity),
-                new Activity("Find a Safe Space", BaseActivity),
-                new Activity("Listen to Calming Music", BaseActivity), 
-                new Activity("Exercise", BaseActivity)
             };
 
             SelectedActivity = new Activity("Starter");
@@ -407,7 +430,7 @@ namespace Mist.ViewModel
             //var uri = new Uri("pack://application:,,,/UserData/Biometrics.xml");
 
             //using var stream = Application.GetResourceStream(uri)!.Stream;
-            var doc = XDocument.Load(userFilePath);
+            var doc = XDocument.Load(biometricFilePath);
 
             HEARTRATE_INIT =
                 float.Parse(
@@ -426,6 +449,18 @@ namespace Mist.ViewModel
                     doc.Root
                         .Element("bodytemperature")
                         .Value);
+
+            // load activities
+            doc = XDocument.Load(activitiesFilePath);
+
+            var activities = doc.Root.Elements("activity");
+
+            foreach (var activity in activities)
+            {
+                string activityName = activity.Value;
+                Activities.Add(new Activity(activityName, BaseActivity, true, true));
+            }
+
         }
 
         public void SaveUserData()
@@ -438,7 +473,19 @@ namespace Mist.ViewModel
                 )
             );
 
-            doc.Save(userFilePath);
+            doc.Save(biometricFilePath);
+
+            XElement root = new XElement("activities");
+
+            foreach (var activity in Activities)
+            {
+                if (activity.CanDelete)
+                {
+                    root.Add(new XElement("activity", activity.Name));
+                }
+            }
+            doc = new XDocument(root);
+            doc.Save(activitiesFilePath);
         }
 
         private void UpdateTimer_DeltaT(object sender, EventArgs e)
@@ -532,6 +579,9 @@ namespace Mist.ViewModel
 
             // Calculate stress level
             StressLevel = Convert.ToInt32(eventOne) + Convert.ToInt32(eventTwo) + Convert.ToInt32(eventThree);
+
+            RiskLevel = Convert.ToInt32(SoundLevel.RiskCondition()) + Convert.ToInt32(LightLevel.RiskCondition());
+
             if (stressAddressedTimer > 0)
             {
                 stressAddressedTimer -= 1;
@@ -543,19 +593,18 @@ namespace Mist.ViewModel
                 TriggersVisibility = false;
                 ActivitiesVisibility = false;
             }
-            RiskLevel = Convert.ToInt32(SoundLevel.RiskCondition()) + Convert.ToInt32(LightLevel.RiskCondition());
 
             // update ferret stress indicator
             FerretText = prompts[stressLevel];
             if (RiskLevel > 1)
             {
-                FerretText += " Rue noticed it is very loud and bright.";
+                FerretText += " Mist noticed it is very loud and bright.";
             } else if (SoundLevel.RiskCondition())
             {
-                FerretText += " Rue noticed it is very loud.";
+                FerretText += " Mist noticed it is very loud.";
             } else if (LightLevel.RiskCondition())
             {
-                FerretText += " Rue noticed it is very bright.";
+                FerretText += " Mist noticed it is very bright.";
             }
             FerretImage = ferretFiles[stressLevel];
         }
@@ -616,9 +665,17 @@ namespace Mist.ViewModel
             SelectedActivity.IsEditing = true;
         }
 
-        private void AddActivity()
+        public void DeleteActivity()
         {
-            // EditActivity, but new
+            if (SelectedActivity != null && SelectedActivity.CanDelete)
+            {
+                Activities.Remove(SelectedActivity);
+            }
+        }
+
+        public void AddActivity(object activity)
+        {
+            Activities.Add(new Activity(NewActivityName, BaseActivity, true, true));
         }
 
         private void ViewTrigger(object trigger)

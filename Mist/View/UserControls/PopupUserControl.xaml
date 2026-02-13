@@ -8,8 +8,9 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <v:BooleanToVisibilityConverter x:Key="BoolVisConverter"/>
+        <v:NullToVisibilityConverter x:Key="NullVisConverter"/>
     </UserControl.Resources>
-    <Grid x:Name="Popup" Background="White" VerticalAlignment="Top" Visibility="{Binding IsViewing, Converter={StaticResource BoolVisConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}">
+    <Grid x:Name="Popup" Background="WhiteSmoke" VerticalAlignment="Top" Visibility="{Binding IsViewing, Converter={StaticResource BoolVisConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -20,9 +21,14 @@
                 <StackPanel Margin="5">
                     <TextBlock TextWrapping="Wrap" Text="{Binding InnerText, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="0,0,5,10"/>
                     <ItemsControl ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=UserControl}}" Margin="10,0,0,0"/>
+                    <TextBox x:Name="CustomTextbox" Visibility="{Binding Textbox, Converter={StaticResource BoolVisConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                             Text="{Binding NewActivityName, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </StackPanel>
+
             <Button Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Width="20" Click="Close_Click"/>
+            <Button x:Name="CustomButton" Content="{Binding ButtonContent, RelativeSource={RelativeSource AncestorType=UserControl}}" Visibility="{Binding ButtonContent, Converter={StaticResource NullVisConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Command="{Binding Command, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
         </Grid>
     </Grid>
 </UserControl>
