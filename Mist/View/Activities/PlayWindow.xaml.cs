@@ -129,6 +129,8 @@ namespace Mist.View.Activities
                     treat.Visibility = Visibility.Collapsed; // hide it
                     draggingTreat = false;
                     currentTreats -= 1;
+                    vm.FerretImage = "ferret_treat_0";
+                    vm.Eating = true;
                     if (currentTreats == 0)
                     {
                         vm.IsEatingComplete = true;

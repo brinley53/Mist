@@ -11,7 +11,7 @@ namespace Mist.ViewModel
 {
     class PlayViewModel : ViewModelBase
     {
-        private List<string> ferretFiles = new List<string> { "ferret_play_0", "ferret_pet_1", "ferret_pet_2", "ferret_pet_3", "ferret_pet_4" };
+        private List<string> ferretFiles = new List<string> { "ferret_play_0", "ferret_pet_1", "ferret_pet_2", "ferret_pet_3", "ferret_pet_4", "ferret_treat_0" };
 
         private bool hover;
         public bool Hover
@@ -65,19 +65,39 @@ namespace Mist.ViewModel
             }
         }
 
+        private bool eating;
+        public bool Eating
+        {
+            get { return eating; }
+            set
+            {
+                eating = value;
+                OnPropertyChanged();
+            }
+        }
+
         public PlayViewModel()
         {
             ferretImage = ferretFiles[ferretIndex];
+            eating = false;
 
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += new EventHandler(UpdateTimer_Second);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 500); // updates every second
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 350); // updates every second
             timer.Start();
         }
 
         private void UpdateTimer_Second(object sender, EventArgs e)
         {
-            ferretIndex = Hover && Click ? (ferretIndex > 3 ? 1 : ferretIndex + 1) : 0; // If user is petting the ferret, cycle through pics
+            if (eating)
+            {
+                ferretIndex = 5; // If ferret ate
+                eating = false;
+            } else
+            {
+                ferretIndex = Hover && Click ? (ferretIndex > 3 ? 1 : ferretIndex + 1) : 0; // If user is petting the ferret, cycle through pics
+            }
+               
             FerretImage = ferretFiles[ferretIndex];
         }
 

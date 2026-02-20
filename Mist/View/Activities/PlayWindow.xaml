@@ -12,27 +12,27 @@
     </Window.Resources>
     <Grid>
         <Image Grid.RowSpan="4" Source="/images/zoom_room.png" Height="1000" Width="600" Margin="-35, -75, 0,0"/>
+        <Image x:Name="Fderret" Height="275" Margin="0,0,75,60" VerticalAlignment="Center" Source="/images/ferret_play_0.png."/>
+
         <Image x:Name="Ferret" Height="275" Margin="0,0,75,60" VerticalAlignment="Center" Source="{Binding FerretImage, Converter={StaticResource ImageSourceConverter}}"/>
         <Image x:Name="Plate" VerticalAlignment="Bottom" Width="300" Margin="0,0,0,-25" Source="/images/plate.png"/>
-        <Rectangle x:Name="FerretHitBox" Width="250" Height="110"  Fill="Transparent"
+        <Ellipse x:Name="FerretHitBox" Width="200" Height="100"  Fill="Transparent"
                 MouseEnter="ferret_MouseEnter" 
                 MouseLeave="ferret_MouseLeave"
                 MouseLeftButtonDown="ferret_MouseLeftButtonDown"
-                MouseLeftButtonUp="ferret_MouseLeftButtonUp" Margin="115,385,157,303"
+                MouseLeftButtonUp="ferret_MouseLeftButtonUp" Margin="90,400,157,303"
                 />
         <Rectangle x:Name="FerretHead" Width="40" Height="40"  Fill="Transparent"
-            MouseEnter="ferret_MouseEnter" 
-            MouseLeave="ferret_MouseLeave"
             MouseLeftButtonDown="ferret_MouseLeftButtonDown"
             MouseLeftButtonUp="ferret_MouseLeftButtonUp" Margin="315,375,157,342"
             />
         <Canvas x:Name="FoodBowl">
-            <Image x:Name="Treat" Source="/images/treat.png" Height="25" Width="25" Canvas.Left="200" Canvas.Top="655" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" RenderTransformOrigin="1.2,2.669" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <Image x:Name="Treat" Source="/images/treat.png" Height="25" Width="25" Canvas.Left="202" Canvas.Top="655" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" RenderTransformOrigin="1.2,2.669" HorizontalAlignment="Left" VerticalAlignment="Top" />
             <Image Source="/images/treat.png" Height="25" Width="25" Canvas.Left="250" Canvas.Top="660" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.556,1.914" />
             <Image Source="/images/treat.png" Height="25" Width="25" Canvas.Left="225" Canvas.Top="650" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" />
             <Image Source="/images/treat.png" Height="25" Width="25" Canvas.Left="240" Canvas.Top="675" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" />
             <Image Source="/images/treat.png" Height="25" Width="25" Canvas.Left="220" Canvas.Top="670" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" RenderTransformOrigin="1.6,0.625" HorizontalAlignment="Left" VerticalAlignment="Top" />
-            <Image Source="/images/treat.png" Height="25" Width="25" Canvas.Left="200" Canvas.Top="680" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" RenderTransformOrigin="1.6,0.625" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Image Source="/images/treat.png" Height="25" Width="25" Canvas.Left="198" Canvas.Top="680" MouseDown="Treat_MouseDown" MouseUp="Treat_MouseUp" MouseMove="Treat_MouseMove" RenderTransformOrigin="1.6,0.625" HorizontalAlignment="Left" VerticalAlignment="Center" />
         </Canvas>
         <Button Name="Continue" Content="Refill Food" Height="50" Width="75" VerticalAlignment="Top" HorizontalAlignment="Left" Click="RefillButton_Click" Visibility="{Binding IsEatingComplete, Converter={StaticResource BoolVisConverter}}" Margin="121,615,0,0"/>
         <Button Name="Exit" Content="Exit" Height="50" Width="75" VerticalAlignment="Top" HorizontalAlignment="Left" Click="CloseButton_Click" Visibility="{Binding IsEatingComplete, Converter={StaticResource BoolVisConverter}}" Margin="275,615,0,0"/>
