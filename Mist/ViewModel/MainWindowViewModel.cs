@@ -32,8 +32,8 @@ namespace Mist.ViewModel
         private static float BODYTEMP_DUR = 60f; //seconds
         private static float SOUND_INIT = 50f; //decibels
         private static float SOUND_THRESHOLD = 77.5f; //decibels
-        private static float LIGHT_INIT = 500f; //lux
-        private static float LIGHT_THRESHOLD = 1000f; //lux
+        private static float LIGHT_INIT = 200f; //lux
+        private static float LIGHT_THRESHOLD = 300f; //lux
 
         Random rnd;
 

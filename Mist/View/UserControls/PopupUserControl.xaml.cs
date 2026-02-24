@@ -25,7 +25,7 @@ namespace Mist.View.UserControls
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(PopupUserControl));
         public static readonly DependencyProperty InnerTextProperty = DependencyProperty.Register("InnerText", typeof(string), typeof(PopupUserControl));
         public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register("Items", typeof(List<string>), typeof(PopupUserControl));
-        public static readonly DependencyProperty ButtonContentProperty = DependencyProperty.Register("ButtonContent", typeof(string), typeof(PopupUserControl), new PropertyMetadata(""));
+        public static readonly DependencyProperty ButtonContentProperty = DependencyProperty.Register("ButtonContent", typeof(string), typeof(PopupUserControl), new PropertyMetadata(null));
         public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(RelayCommand), typeof(PopupUserControl), new PropertyMetadata(null));
         public static readonly DependencyProperty NewActivityNameProperty = DependencyProperty.Register("NewActivityName", typeof(string), typeof(PopupUserControl), 
             new FrameworkPropertyMetadata(
