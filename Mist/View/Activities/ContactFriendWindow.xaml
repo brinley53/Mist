@@ -11,7 +11,7 @@
         <Image Source="/images/journal.png"/>
         <ScrollViewer Margin="60,0,0,0">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Help Rue write a message to someone close." TextWrapping="Wrap" TextAlignment="Center" FontWeight="DemiBold" FontSize="25" Margin="25"/>
+                <TextBlock Text="Help Mist write a message to someone close." TextWrapping="Wrap" TextAlignment="Center" FontWeight="DemiBold" FontSize="25" Margin="25"/>
                 <uc:FormUserControl x:Name="People" Title="Dear" Text="{Binding People, Mode=TwoWay}" Prompts="{Binding PeoplePrompts}"/>
                 <uc:FormUserControl x:Name="Feeling" Title="I feel" Text="{Binding Feeling, Mode=TwoWay}" Prompts="{Binding FeelingPrompts}"/>
                 <uc:FormUserControl x:Name="Reason" Title="because of" Text="{Binding Reason, Mode=TwoWay}" Prompts="{Binding ReasonPrompts}"/>

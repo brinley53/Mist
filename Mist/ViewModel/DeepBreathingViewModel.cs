@@ -16,7 +16,7 @@ namespace Mist.ViewModel
         private const int inhaleTime = 4;
         private const int holdTime = 4;
         private const int exhaleTime = 4;
-        private const int repeats = 1;
+        private const int repeats = 3;
 
         private int instructionIndex = 2;
         private int repeat;
