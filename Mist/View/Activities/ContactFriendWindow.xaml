@@ -18,8 +18,8 @@
                 <uc:FormUserControl x:Name="Action" Title="I need" Text="{Binding Action, Mode=TwoWay}" Prompts="{Binding ActionPrompts}"/>
                 <TextBlock Text="Here is the message you created:" TextAlignment="Center" FontSize="20" Margin="20"/>
                 <TextBox Text="{Binding Message}" Height="100" Width="350" Margin="10" TextWrapping="Wrap"/>
-                <Image Source="/images/ferret_play_0.png"/>
-                <Button Name="Exit" Content="Exit" Height="50" Width="75" Click="CloseButton_Click" Margin="0, 0, 0, 50"/>
+                <Image Source="/images/ferret_play_0.png" Height="150"/>
+                <Button Name="Exit" Content="Exit" Height="50" Width="75" Click="CloseButton_Click" Margin="0,50,0,50"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
